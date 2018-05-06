@@ -14,15 +14,15 @@ Descripción del juego:
   - Plataformas: Arcade/Super Nintendo(1992)/PlayStation(1998)
  
 Recursos:
-  - BLOQUES: http://eab.abime.net/showthread.php?t=21804
-  - FONDOS: https://www.spriters-resource.com/snes/superbusterbros/sheet/34370/
-  - MUÑECO Y  PELOTAS: https://www.spriters-resource.com/arcade/superpang/sheet/60043/
-  - PANG: http://spritedatabase.net/file/7220/Player_Enemies_and_Miscellaneous
+  - Sprites bloques: http://eab.abime.net/showthread.php?t=21804
+  - Sprites fondos: https://www.spriters-resource.com/snes/superbusterbros/sheet/34370/
+  - Sprites jugador y pelotas: https://www.spriters-resource.com/arcade/superpang/sheet/60043/
+  - Sprites bonificadores y enemigos: http://spritedatabase.net/file/7220/Player_Enemies_and_Miscellaneous
 
 Partes a desarrollar:
 
 Nivel básico:
-Se desarrollará el modo panic mode del clásico super pang.
+Se desarrollará el modo panic mode del clásico super pang. Está será la meta inicial a alcanzar. Todos los extras mencionados posteriormente se irán añadiendo gradualmente sin eliminar la esencia de este modo del juego.
 
 Extras: 
   -	Distintos arpones
