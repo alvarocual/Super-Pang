@@ -1,9 +1,9 @@
 CONCEPTO Y ALCANCE
 
 Miembros: 
-  Javier Carrión García
-  Álvaro Cuevas Álvarez
-  Alejandro García Montero
+  - Javier Carrión García
+  - Álvaro Cuevas Álvarez
+  - Alejandro García Montero
   
 Descripción del juego:
   - Videojuego: Super Pang
