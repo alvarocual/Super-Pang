@@ -1,6 +1,7 @@
 # Background:
 	- Ancho: 256
 	- Alto: 192
+	
   
 # Player:
 ## PlayerMovimiento1:
@@ -34,6 +35,7 @@
 ## PlayerVictoria:
 	- Ancho: 34
 	- Alto: 32
+	
   
 # Burbujas:
 ## Bolas1:
@@ -59,10 +61,12 @@
 ## BolasEspeciales:
 	- Ancho: 32
 	- Alto: 26
+	
   
 # Bonificadores
 	- Ancho: 20
 	- Alto: 20
+	
   
 # Arpones
 ## Cuerdas Arpon normal:
