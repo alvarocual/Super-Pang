@@ -5,26 +5,19 @@ Miembros:
   Álvaro Cuevas Álvarez
   Alejandro García Montero
   
-Videojuego: Super Pang
-
-Fecha lanzamiento: 1990
-
-Género: Plataformas/Arcade/Puzzle
-
-Desarrolladora: Mitchell Corporation
-
-Distribuidora: Capcom
-
-Plataformas: Arcade/Super Nintendo(1992)/PlayStation(1998)
+Descripción del juego:
+  - Videojuego: Super Pang
+  - Fecha lanzamiento: 1990
+  - Género: Plataformas/Arcade/Puzzle
+  - Desarrolladora: Mitchell Corporation
+  - Distribuidora: Capcom
+  - Plataformas: Arcade/Super Nintendo(1992)/PlayStation(1998)
  
 Recursos:
-BLOQUES: http://eab.abime.net/showthread.php?t=21804
-
-FONDOS: https://www.spriters-resource.com/snes/superbusterbros/sheet/34370/
-
-MUÑECO Y  PELOTAS: https://www.spriters-resource.com/arcade/superpang/sheet/60043/
-
-PANG: http://spritedatabase.net/file/7220/Player_Enemies_and_Miscellaneous
+  - BLOQUES: http://eab.abime.net/showthread.php?t=21804
+  - FONDOS: https://www.spriters-resource.com/snes/superbusterbros/sheet/34370/
+  - MUÑECO Y  PELOTAS: https://www.spriters-resource.com/arcade/superpang/sheet/60043/
+  - PANG: http://spritedatabase.net/file/7220/Player_Enemies_and_Miscellaneous
 
 Partes a desarrollar:
 
