@@ -65,7 +65,7 @@
 	- Alto: 20
   
 # Arpones
-Cuerdas Arpon normal:
+## Cuerdas Arpon normal:
 	- Ancho: 5
 	- Alto: 14
 
