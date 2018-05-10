@@ -4,35 +4,6 @@
 	
   
 # Player:
-## PlayerMovimiento1:
-	- Ancho: 31
-	- Alto: 30
-
-## PlayerMovimiento2:
-	- Ancho: 28
-	- Alto: 31
-
-## PlayerMovimiento3:
-	- Ancho: 27
-	- Alto: 30
-
-## PlayerMovimiento4:
-	- Ancho: 28
-	- Alto: 31
-
-## PlayerQuieto: 
-	- Ancho: 25
-	- Alto: 31
-
-## PlayerDisparo:
-	- Ancho: 25
-	- Alto: 29
-
-## PlayerMuerte:
-	- Ancho: 30
-	- Alto: 30
-
-## PlayerVictoria:
 	- Ancho: 34
 	- Alto: 32
 	
@@ -67,23 +38,16 @@
 	- Ancho: 20
 	- Alto: 20
 	
-  
+	
 # Arpones
-## Cuerdas Arpon normal:
-	- Ancho: 5
-	- Alto: 14
-
-## Cabeza Arpon normal:
+## Arpon Normal:
 	- Ancho: 6
-	- Alto: 10
+	- Alto: 192
 
-## Cuerdas Arpon fijo:
-	- Ancho: 2
-	- Alto: 14
 
-## Cabeza Arpon fijo:
+## Arpon fijo:
 	- Ancho: 8
-	- Alto: 10
+	- Alto: 192
 
 ## Disparo:
 	- Ancho: 6
