@@ -1,7 +1,7 @@
 # Background:
 ## Interior:
-	- Ancho: 240
-	- Alto: 176
+	- Ancho: 256
+	- Alto: 192
 	
 ## Borde:
 	- Ancho: 256
