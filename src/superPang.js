@@ -1,34 +1,48 @@
 var game = function() {
 	var Q = window.Q = Quintus()
 			.include("Sprites, Scenes, Input, 2D, Anim, Touch, TMX, UI, Audio")
-			.setup({width:512,
-					//height:384,
-					scaleToFit:true})
+			.setup({width:768,
+					height:576,
+					maximize:true})
 					//audioSupported:["ogg", "mp3"]})
 			.controls().touch();
 
-	Q.scene("level1",function(stage) {
+
+//-------------BACKGROUND----------------
+	Q.scene("back",function(stage) {
 		// Add in a repeater for a little parallax action
 		stage.insert(new Q.Backgrounds());
 	});
 
-	Q.load(["backgrounds.png", "backgrounds.json"], function() {
-		Q.compileSheets("backgrounds.png", "backgrounds.json");
-		Q.stageScene("level1");
+
+//-------------LEVEL----------------
+	Q.scene("level",function(stage){
+
 	});
 
 
+
+//-------------LOAD_RESOURCES----------------
+	Q.load(["backgrounds.png", "backgrounds.json"], function() {
+		Q.compileSheets("backgrounds.png", "backgrounds.json");
+		Q.stageScene("level");
+		Q.stageScene("back");
+	});
+
+
+//-------------BACKGROUND_SPRITE----------------
 	Q.Sprite.extend("Backgrounds",{
 		init:function(p){
 			this._super(p,{
 				sprite: "background",
 				sheet: "background",
 				frame:0,
-				x:128,
-				y:96
+				x:384,
+				y:288,
+				scale:3
 			});
 		},
-		step: function(){}
+		step:function(){}
 	});
 
 
