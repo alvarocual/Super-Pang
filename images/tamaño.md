@@ -4,9 +4,7 @@
 	- Alto: 192
 	
 ## Borde:
-	- Ancho: 256
-	- Alto: 192
-	
+	- Ancho: 9	
   
 # Player:
 	- Ancho: 34
