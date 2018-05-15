@@ -16,18 +16,26 @@ var game = function() {
 
 //-------------LEVEL----------------
 	Q.scene("level",function(stage){
-		stage.insert(new Q.Edge());
+		stage.insert(new Q.Left_Edge());
+		//stage.insert(new Q.Right_Edge());
+		//stage.insert(new Q.Down_Edge());
 		stage.insert(new Q.Player());
 	});
 
 
 
 //-------------LOAD_RESOURCES----------------
-	Q.load(["backgrounds.png", "backgrounds.json", "edge.png", "edge.json",
-			"player.png", "player.json"], function() {
+	Q.load(["backgrounds.png", "backgrounds.json", "left_edge.png", "left_edge.json",
+			"right_edge.png", "right_edge.json","player.png", "player.json",
+			"down_edge.png", "down_edge.json", "up_edge.png", "up_edge.json"],
+			function() {
 		Q.compileSheets("backgrounds.png", "backgrounds.json");
-		Q.compileSheets("edge.png", "edge.json");
+		Q.compileSheets("left_edge.png", "left_edge.json");
+		Q.compileSheets("right_edge.png", "right_edge.json");
+		Q.compileSheets("down_edge.png", "down_edge.json");
+		Q.compileSheets("up_edge.png", "up_edge.json");
 		Q.compileSheets("player.png", "player.json");
+
 		Q.stageScene("back", 0);
 		Q.stageScene("level", 1);
 	});
@@ -52,21 +60,67 @@ var game = function() {
 				frame:0,
 				x:384,
 				y:288,
-				scale:3
+				//scale:3
 			});
 		}
 	});
 
-//-------------EDGE_SPRITE----------------
-	Q.Sprite.extend("Edge",{
+//-------------LEFT_EDGE_SPRITE----------------
+	Q.Sprite.extend("Left_Edge",{
 		init:function(p){
 			this._super(p,{
-				sprite: "edge",
-				sheet: "edge",
+				sprite: "left_edge",
+				sheet: "left_edge",
+				x:0,
+				y:0,
+				gravity: 0,
+				//scale:3
+			});
+			this.add('2d');
+		}
+	});
+
+//-------------RIGHT_EDGE_SPRITE----------------
+	Q.Sprite.extend("Right_Edge",{
+		init:function(p){
+			this._super(p,{
+				sprite: "right_edge",
+				sheet: "right_edge",
+				x:100,
+				y:288,
+				gravity: 0,
+				//scale:3
+			});
+			this.add('2d');
+		}
+	});
+
+//-------------DOWN_EDGE_SPRITE----------------
+	Q.Sprite.extend("Down_Edge",{
+		init:function(p){
+			this._super(p,{
+				sprite: "down_edge",
+				sheet: "down_edge",
 				x:384,
-				y:400,
-				gravity:0,
-				scale:3
+				y:500,
+				gravity: 0,
+				//scale:3
+			});
+			this.add('2d');
+		}
+	});
+
+
+//-------------EDGE_SPRITE----------------
+	Q.Sprite.extend("Up_Edge",{
+		init:function(p){
+			this._super(p,{
+				sprite: "up_edge",
+				sheet: "up_edge",
+				x:384,
+				y:288,
+				gravity: 0,
+				//scale:3
 			});
 			this.add('2d');
 		}
@@ -80,9 +134,9 @@ var game = function() {
 				sheet:"player",
 				frame:4,
 				x:400,
-				y:400,
+				y:400,//503
 				playing: true,
-				scale:3
+				//scale:3
 			});
 			this.add('2d, platformerControls, animation');
 		},
@@ -98,4 +152,16 @@ var game = function() {
 			}
 		}
 	});
+
+//-------------BALL1_SPRITE----------------
+	/*Q.Sprite.extend("Ball1",{
+		init:function(p){
+			this._super(p,{
+				sprite:"bolas1",
+				sheet:"bolas1",
+				frame:0,
+
+			});
+		}
+	});*/
 }
