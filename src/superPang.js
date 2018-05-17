@@ -40,8 +40,8 @@ var game = function() {
 
 //-------------ANIMATIONS-------------
 	Q.animations("player", {
-		move_right: 	{ frames: [3,0,1,2],  rate: 1/9 }, 
-		move_left: 		{ frames: [3,0,1,2],  rate: 1/9, flip:"x" },
+		move_left: 		{ frames: [3,0,1,2],  rate: 1/8, flip:"left" }, 
+		move_right: 	{ frames: [3,0,1,2],  rate: 1/8, flip:"right" },
 		stand: 			{ frames: [4],		  rate: 1/9 },
 		died: 			{ frames: [6],		  rate: 1,	 loop: false, trigger:"dying" },
 		victory:  		{ frames: [7],		  rate: 1,	 loop: false },
@@ -104,7 +104,6 @@ var game = function() {
 		}
 	});
 
-
 //-------------UP_EDGE_SPRITE----------------
 	Q.Sprite.extend("Up_Edge",{
 		init:function(p){
@@ -127,21 +126,27 @@ var game = function() {
 				sheet:"player",
 				frame:4,
 				x:400,
-				y:400,//503
+				y:400,
 				playing: true,
-				scale:2
+				scale:2,
+				jumpSpeed:0
 			});
 			this.add('2d, platformerControls, animation');
 		},
 
 		step:function(){
-			if(this.playing){
-				if(this.p.vx > 0)
+			if(this.p.playing){
+				if(this.p.vx > 0){
+					this.p.vx = 400;
 					this.play("move_right", 1);
-				else if(this.p.vx < 0)
+				}
+				else if(this.p.vx < 0){
+					this.p.vx = -400;
 					this.play("move_left", 1);
+				}
 				else
 					this.play("stand", 1);
+				//if()
 			}
 		}
 	});
