@@ -21,7 +21,21 @@ var game = function() {
 		stage.insert(new Q.Up_Edge());
 		stage.insert(new Q.Down_Edge());
 		stage.insert(new Q.Player());
-		stage.insert(new Q.Bolas5());
+		stage.insert(new Q.Bolas1());
+
+		/* Aleatorio entre 88 y 680
+			Math.floor((Math.random() * 680) + 88);
+			y = 78*/
+
+		/*var levelMax = 40;
+		
+		for(var i=0, end = levelMax; i < end;i++) {
+			nBalls = (i+1) * 2;
+
+			for(var j=0, endLevel = nBalls; j < endLevel;j++) {
+				
+			}
+		}*/
 	});
 
 
@@ -140,9 +154,9 @@ var game = function() {
 				sheet: "bolas1",
 				frame:0,
 				x:200,
-				y:200,
+				y:78,
 				vx: 175,
-				gravity: 0.5,
+				gravity: 0,
 				scale:2
 			});
 			this.add('2d, aiBounce');
