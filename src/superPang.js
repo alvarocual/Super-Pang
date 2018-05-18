@@ -49,8 +49,8 @@ var game = function() {
 
 //-------------ANIMATIONS-------------
 	Q.animations("player", {
-		move_right: 	{ frames: [3,0,1,2],  rate: 1/9 }, 
-		move_left: 		{ frames: [3,0,1,2],  rate: 1/9, flip:"x" },
+		move_right: 	{ frames: [3,0,1,2],  rate: 1/8, flip:"right" }, 
+		move_left: 		{ frames: [3,0,1,2],  rate: 1/8, flip:"left" },
 		stand: 			{ frames: [4],		  rate: 1/9 },
 		died: 			{ frames: [6],		  rate: 1,	 loop: false, trigger:"dying" },
 		victory:  		{ frames: [7],		  rate: 1,	 loop: false },
@@ -283,7 +283,9 @@ var game = function() {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -550;
 				}
-			})		
+			})
+		}
+	});		
 
 //-------------HARPOON_SPRITE----------------
 	Q.Sprite.extend("Harpoon",{
@@ -318,18 +320,22 @@ var game = function() {
 
 		step:function(dt){
 			if(this.p.playing){
-				if(this.p.vx > 0){
-					this.p.vx = 400;
+				if(this.p.vx > 0) {
+					this.p.vx = 350;
 					this.play("move_right", 1);
-        }
-				else if(this.p.vx < 0)
+				}
+        	
+				else if (this.p.vx < 0) {
+					this.p.vx = -350;
 					this.play("move_left", 1);
+				}
+
 				else
 					this.play("stand", 1);
 			}
 		},
 
-		shoot:function(){
+		shoot:function() {
 			this.play("shoot");
 		},
 
