@@ -31,6 +31,7 @@ var game = function() {
 			"left_edge.png", "right_edge.png", "down_edge.png", "up_edge.png",
 			"bolas1.png", "bolas1.json", "bolas2.png", "bolas2.json", "bolas3.png", "bolas3.json",
 			"bolas4.png", "bolas4.json", "bolas5.png", "bolas5.json", "bolasEspeciales.png", "bolasEspeciales.json"],
+
 			function() {
 		Q.compileSheets("backgrounds.png", "backgrounds.json");
 		Q.compileSheets("player.png", "player.json");
@@ -53,7 +54,7 @@ var game = function() {
 		stand: 			{ frames: [4],		  rate: 1/9 },
 		died: 			{ frames: [6],		  rate: 1,	 loop: false, trigger:"dying" },
 		victory:  		{ frames: [7],		  rate: 1,	 loop: false },
-		shoot:  		{ frames: [5],		  rate: 1/9, loop: false }
+		shoot:  		{ frames: [5],		  rate: 1/9, loop: false, trigger:"shooted" }
 	});
 
 	Q.animations("bolasEspeciales", {
@@ -130,7 +131,6 @@ var game = function() {
 			this.add('2d');
 		}
 	});
-
 
 //-------------BOLAS1_SPRITE----------------
 	Q.Sprite.extend("Bolas1",{
@@ -284,6 +284,13 @@ var game = function() {
 					this.p.vy = -550;
 				}
 			})		
+
+//-------------HARPOON_SPRITE----------------
+	Q.Sprite.extend("Harpoon",{
+		init:function(p){
+			this._super(p,{
+				asset:"harpoon.png"
+			});
 		}
 	});
 
@@ -300,17 +307,35 @@ var game = function() {
 				scale:2
 			});
 			this.add('2d, platformerControls, animation');
+			
+			/*The user push the fire button*/
+			Q.input.on("fire");
+
+			/* Wait until the firing animation has played until
+			 actually launching the harpoon*/
+			this.on("shooted",this,"launchHarpoon");
 		},
 
-		step:function(){
-			if(this.playing){
-				if(this.p.vx > 0)
+		step:function(dt){
+			if(this.p.playing){
+				if(this.p.vx > 0){
+					this.p.vx = 400;
 					this.play("move_right", 1);
+        }
 				else if(this.p.vx < 0)
 					this.play("move_left", 1);
 				else
 					this.play("stand", 1);
 			}
+		},
+
+		shoot:function(){
+			this.play("shoot");
+		},
+
+		launchHarpoon: function(stage){
+			var harpoon = new Q.Harpoon({x:this.p.x});
+			stage.insert(harpoon);
 		}
 	});
 }
