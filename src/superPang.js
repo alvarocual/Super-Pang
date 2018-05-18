@@ -28,7 +28,7 @@ var game = function() {
 //-------------LOAD_RESOURCES----------------
 	Q.load(["backgrounds.png", "backgrounds.json", "left_edge.png",
 			"right_edge.png", "player.png", "player.json",
-			"down_edge.png", "up_edge.png"],
+			"down_edge.png", "up_edge.png", "harpoon.png"],
 			function() {
 		Q.compileSheets("backgrounds.png", "backgrounds.json");
 		Q.compileSheets("player.png", "player.json");
@@ -45,7 +45,7 @@ var game = function() {
 		stand: 			{ frames: [4],		  rate: 1/9 },
 		died: 			{ frames: [6],		  rate: 1,	 loop: false, trigger:"dying" },
 		victory:  		{ frames: [7],		  rate: 1,	 loop: false },
-		shoot:  		{ frames: [5],		  rate: 1/9, loop: false }
+		shoot:  		{ frames: [5],		  rate: 1/9, loop: false, trigger:"shooted" }
 	});
 
 //-------------BACKGROUND_SPRITE----------------
@@ -118,6 +118,15 @@ var game = function() {
 		}
 	});
 
+//-------------HARPOON_SPRITE----------------
+	Q.Sprite.extend("Harpoon",{
+		init:function(p){
+			this._super(p,{
+				asset:"harpoon.png"
+			});
+		}
+	});
+
 //-------------PLAYER_SPRITE----------------
 	Q.Sprite.extend("Player",{
 		init:function(p){
@@ -132,9 +141,16 @@ var game = function() {
 				jumpSpeed:0
 			});
 			this.add('2d, platformerControls, animation');
+			
+			/*The user push the fire button*/
+			Q.input.on("fire");
+
+			/* Wait until the firing animation has played until
+			 actually launching the harpoon*/
+			this.on("shooted",this,"launchHarpoon");
 		},
 
-		step:function(){
+		step:function(dt){
 			if(this.p.playing){
 				if(this.p.vx > 0){
 					this.p.vx = 400;
@@ -146,20 +162,17 @@ var game = function() {
 				}
 				else
 					this.play("stand", 1);
-				//if()
 			}
+		},
+
+		shoot:function(){
+			this.play("shoot");
+		},
+
+		launchHarpoon: function(stage){
+			var harpoon = new Q.Harpoon({x:this.p.x});
+			stage.insert(harpoon);
 		}
+
 	});
-
-//-------------BALL1_SPRITE----------------
-	/*Q.Sprite.extend("Ball1",{
-		init:function(p){
-			this._super(p,{
-				sprite:"bolas1",
-				sheet:"bolas1",
-				frame:0,
-
-			});
-		}
-	});*/
 }
