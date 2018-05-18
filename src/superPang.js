@@ -21,7 +21,7 @@ var game = function() {
 		stage.insert(new Q.Up_Edge());
 		stage.insert(new Q.Down_Edge());
 		stage.insert(new Q.Player());
-		stage.insert(new Q.Bolas1());
+		stage.insert(new Q.Bolas5());
 	});
 
 
@@ -139,20 +139,25 @@ var game = function() {
 				sprite: "bolas1",
 				sheet: "bolas1",
 				frame:0,
-				x: 200,
-				y: 450,
-				vx: 75,
-				vy: -300,
-				gravity: 0.25,
+				x:200,
+				y:200,
+				vx: 175,
+				gravity: 0.5,
 				scale:2
 			});
-			this.add('2d');
+			this.add('2d, aiBounce');
 		},
 
-		step: function(dt) {
-			this.p.vy += dt * 9.8;
-			this.p.x += this.p.vx * dt;
-			this.p.y += this.p.vy * dt;
+		step: function() {
+			this.on("bump.bottom, bump.top", function(collision) {
+				if (collision.obj.isA("Down_Edge")) {
+					this.p.vy = -700;
+				}
+
+				if (collision.obj.isA("Up_Edge")) {
+					this.p.vy = 350;
+				}
+			})						
 		}
 	});
 
@@ -163,11 +168,21 @@ var game = function() {
 				sprite: "bolas2",
 				sheet: "bolas2",
 				frame:0,
-				gravity: 0,
-				gravity: 0.25,
+				x:200,
+				y:200,
+				vx: 175,
+				gravity: 0.5,
 				scale:2
 			});
-			this.add('2d');
+			this.add('2d, aiBounce');
+		},
+
+		step: function() {
+			this.on("bump.bottom", function(collision) {
+				if (collision.obj.isA("Down_Edge")) {
+					this.p.vy = -625;
+				}
+			})						
 		}
 	});
 
@@ -178,10 +193,21 @@ var game = function() {
 				sprite: "bolas3",
 				sheet: "bolas3",
 				frame:0,
-				gravity: 0.25,
+				x: 200,
+				y: 200,
+				vx: 175,
+				gravity: 0.5,
 				scale:2
 			});
-			this.add('2d');
+			this.add('2d, aiBounce');
+		},
+
+		step: function() {
+			this.on("bump.bottom", function(collision) {
+				if (collision.obj.isA("Down_Edge")) {
+					this.p.vy = -550;
+				}
+			})						
 		}
 	});
 
@@ -192,10 +218,21 @@ var game = function() {
 				sprite: "bolas4",
 				sheet: "bolas4",
 				frame:0,
-				gravity: 0.25,
+				x:200,
+				y:200,
+				vx: 175,
+				gravity: 0.5,
 				scale:2
 			});
-			this.add('2d');
+			this.add('2d, aiBounce');
+		},
+
+		step: function() {
+			this.on("bump.bottom", function(collision) {
+				if (collision.obj.isA("Down_Edge")) {
+					this.p.vy = -450;
+				}
+			})						
 		}
 	});
 
@@ -206,10 +243,21 @@ var game = function() {
 				sprite: "bolas5",
 				sheet: "bolas5",
 				frame:0,
-				gravity: 0.25,
+				x:200,
+				y:200,
+				vx: 175,
+				gravity: 0.5,
 				scale:2
 			});
-			this.add('2d');
+			this.add('2d, aiBounce');
+		},
+
+		step: function() {
+			this.on("bump.bottom", function(collision) {
+				if (collision.obj.isA("Down_Edge")) {
+					this.p.vy = -350;
+				}
+			})						
 		}
 	});
 
@@ -219,14 +267,23 @@ var game = function() {
 			this._super(p,{
 				sprite: "bolasEspeciales",
 				sheet: "bolasEspeciales",
-				gravity: 0.25,
+				vx: 175,
+				x:200,
+				y:200,
+				gravity: 0.5,
 				scale:2
 			});
-			this.add('2d, animation');
+			this.add('2d, animation, aiBounce');
 		}, 
 
 		step:function(){
 			this.play("change", 1);
+
+			this.on("bump.bottom", function(collision) {
+				if (collision.obj.isA("Down_Edge")) {
+					this.p.vy = -550;
+				}
+			})		
 		}
 	});
 
