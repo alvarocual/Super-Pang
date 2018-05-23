@@ -28,7 +28,7 @@ var game = function() {
 //-------------LOAD_RESOURCES----------------
 	Q.load(["backgrounds.png", "backgrounds.json", "left_edge.png",
 			"right_edge.png", "player.png", "player.json",
-			"down_edge.png", "up_edge.png", "harpoon.png"],
+			"down_edge.png", "up_edge.png", "arpon.png"],
 			function() {
 		Q.compileSheets("backgrounds.png", "backgrounds.json");
 		Q.compileSheets("player.png", "player.json");
@@ -69,10 +69,10 @@ var game = function() {
 				asset: "left_edge.png",
 				x:12,
 				y:288,
-				gravity: 0,
+				//gravity: 0,
 				scale:3
 			});
-			this.add('2d');
+			//this.add('2d');
 		}
 	});
 
@@ -81,12 +81,12 @@ var game = function() {
 		init:function(p){
 			this._super(p,{
 				asset: "right_edge.png",
-				x:750,
+				x:755,
 				y:288,
-				gravity: 0,
+				//gravity: 0,
 				scale:3
 			});
-			this.add('2d');
+			//this.add('2d');
 		}
 	});
 
@@ -97,10 +97,10 @@ var game = function() {
 				asset: "down_edge.png",
 				x:384,
 				y:564,
-				gravity: 0,
+				//gravity: 0,
 				scale:3
 			});
-			this.add('2d');
+			//this.add('2d');
 		}
 	});
 
@@ -110,23 +110,34 @@ var game = function() {
 			this._super(p,{
 				asset: "up_edge.png",
 				x:384,
-				y:12,
-				gravity: 0,
+				y:110,//12,
+				type: Q.SPRITE_ENEMY,
+				//gravity: 0,
 				scale:3
 			});
-			this.add('2d');
+			//this.add('2d');
 		}
 	});
 
 //-------------HARPOON_SPRITE----------------
-	Q.Sprite.extend("Harpoon",{
+	Q.MovingSprite.extend("Harpoon",{
 		init:function(p){
 			this._super(p,{
-				asset:"harpoon.png",
+				asset:"arpon.png",
 				scale:2,
-				y:282
+				collisionMask: Q.SPRITE_ENEMY,
+				y:582,
+				//gravity: 0,
+				vy: -200
 			});
-		}
+			//this.add('2d');
+		},
+
+		/*step: function(dt) {
+			if(this.p.y === 12){
+				this.p.vy = 0;
+			}
+		}*/
 	});
 
 //-------------PLAYER_SPRITE----------------
@@ -139,6 +150,7 @@ var game = function() {
 				x:400,
 				y:400,
 				playing: true,
+				type: Q.SPRITE_FRIENDLY,
 				scale:2,
 				jumpSpeed:0
 			});
