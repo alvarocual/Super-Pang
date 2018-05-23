@@ -21,23 +21,28 @@ var game = function() {
 		stage.insert(new Q.Up_Edge());
 		stage.insert(new Q.Down_Edge());
 		stage.insert(new Q.Player());
-		stage.insert(new Q.Bolas1());
-
-		/* Aleatorio entre 88 y 680
-			Math.floor((Math.random() * 680) + 88);
-			y = 78*/
-
-		/*var levelMax = 40;
-		
-		for(var i=0, end = levelMax; i < end;i++) {
-			nBalls = (i+1) * 2;
-
-			for(var j=0, endLevel = nBalls; j < endLevel;j++) {
-				
-			}
-		}*/
+		stage.on('poststep', this, createBall);
 	});
 
+	createBall = function(dt) {
+		
+		Q.state.set('current', Q.state.p.current - dt );
+
+		if (Q.state.p.current === 0) {
+
+			Q.state.set('current', Q.state.p.refresh);
+
+			var levelMax = 40;
+			for(var i=0, end = levelMax; i < end;i++) {
+				nBalls = (i+1) * 2;
+
+				for(var j=0, endLevel = nBalls; j < endLevel;j++) {
+					xRandom = Math.floor((Math.random() * 680) + 88);
+					Q.stage().insert(new Q.Bolas1({x:xRandom}));
+				}
+			}
+		}
+	};
 
 
 //-------------LOAD_RESOURCES----------------
@@ -55,6 +60,8 @@ var game = function() {
 		Q.compileSheets("bolas4.png", "bolas4.json");
 		Q.compileSheets("bolas5.png", "bolas5.json");
 		Q.compileSheets("bolasEspeciales.png", "bolasEspeciales.json");
+
+		Q.state.reset({refresh:1, current:0});
 
 		Q.stageScene("back", 0);
 		Q.stageScene("level", 1);
@@ -153,23 +160,26 @@ var game = function() {
 				sprite: "bolas1",
 				sheet: "bolas1",
 				frame:0,
-				x:200,
 				y:78,
 				vx: 175,
-				gravity: 0,
+				gravity: 0.5,
 				scale:2
 			});
 			this.add('2d, aiBounce');
 		},
 
 		step: function() {
-			this.on("bump.bottom, bump.top", function(collision) {
+			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -700;
 				}
 
 				if (collision.obj.isA("Up_Edge")) {
 					this.p.vy = 350;
+				}
+
+				if (collision.obj.isA("Bolas1")) {
+
 				}
 			})						
 		}
@@ -192,7 +202,7 @@ var game = function() {
 		},
 
 		step: function() {
-			this.on("bump.bottom", function(collision) {
+			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -625;
 				}
@@ -217,7 +227,7 @@ var game = function() {
 		},
 
 		step: function() {
-			this.on("bump.bottom", function(collision) {
+			this.on("bump.bottom, bump.top, bump.right, bump.left ", function(collision) {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -550;
 				}
@@ -242,7 +252,7 @@ var game = function() {
 		},
 
 		step: function() {
-			this.on("bump.bottom", function(collision) {
+			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -450;
 				}
@@ -267,7 +277,7 @@ var game = function() {
 		},
 
 		step: function() {
-			this.on("bump.bottom", function(collision) {
+			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -350;
 				}
@@ -293,7 +303,7 @@ var game = function() {
 		step:function(){
 			this.play("change", 1);
 
-			this.on("bump.bottom", function(collision) {
+			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -550;
 				}
