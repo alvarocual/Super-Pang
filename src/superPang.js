@@ -33,9 +33,18 @@ var game = function() {
 		if (Q.state.p.current < 0) {
 
 			Q.state.set('current', Q.state.p.refresh);
+			var xRandom = 0;
 
-			xRandom = Math.floor((Math.random() * 600) + 100);
-			Q.stage().insert(new Q.Bolas1({x:xRandom}));
+			if (Q.state.p.nBackground === 40) {
+				// Creamos bola especial de victoria
+				// El numero aleatorio tiene que ser diferente por el tamaño de la bola
+				xRandom = Math.floor((Math.random() * 600) + 100);
+				Q.stage().insert(new Q.BolaEspecial({x:xRandom}));
+			}
+			else {
+				xRandom = Math.floor((Math.random() * 600) + 100);
+				Q.stage().insert(new Q.Bolas1({x:xRandom}));
+			}
 
 
 			if (Q.state.p.changeBackground === 3) {
@@ -64,7 +73,7 @@ var game = function() {
 		Q.compileSheets("bolas3.png", "bolas3.json");
 		Q.compileSheets("bolas4.png", "bolas4.json");
 		Q.compileSheets("bolas5.png", "bolas5.json");
-		Q.compileSheets("bolasEspeciales.png", "bolasEspeciales.json");
+		Q.compileSheets("bolaEspecial.png", "bolasEspecial.json");
 
 		Q.state.reset({refresh:5, current:5, changeBackground:0, nBackground:1, ammo:2});
 
@@ -83,8 +92,8 @@ var game = function() {
 		shoot:  		{ frames: [5],		  rate: 1/8, loop: false, trigger:"shooted", next: "stand" }
 	});
 
-	Q.animations("bolasEspeciales", {
-		change: {frames: [0,1,2,3], rate: 3}
+	Q.animations("bolaEspecial", {
+		change: {frames: [0,1], rate: 3}
 	});
 
 //-------------BACKGROUND_SPRITE----------------
@@ -296,11 +305,11 @@ var game = function() {
 	});
 
 //-------------BOLASESPECIALES_SPRITE----------------
-	Q.Sprite.extend("BolasEspeciales",{
+	Q.Sprite.extend("BolaEspecial",{
 		init:function(p){
 			this._super(p,{
-				sprite: "bolasEspeciales",
-				sheet: "bolasEspeciales",
+				sprite: "bolaEspecial",
+				sheet: "bolaEspecial",
 				vx: 175,
 				x:200,
 				y:200,
