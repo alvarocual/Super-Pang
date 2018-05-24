@@ -47,7 +47,7 @@
 # Arpones
 ## Arpon Normal:
 	- Ancho: 6
-	- Alto: 192
+	- Alto: 380
 
 
 ## Arpon fijo:
