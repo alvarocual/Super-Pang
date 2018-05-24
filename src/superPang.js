@@ -60,20 +60,21 @@ var game = function() {
 
 
 //-------------LOAD_RESOURCES----------------
-	Q.load(["backgrounds.png", "backgrounds.json", "player.png", "player.json", "arpon.png",
+	Q.load(["backgrounds.png", "backgrounds.json", "player.png", "player.json", "arpon.png", "arpon.json",
 			"left_edge.png", "right_edge.png", "down_edge.png", "up_edge.png",
 			"bolas1.png", "bolas1.json", "bolas2.png", "bolas2.json", "bolas3.png", "bolas3.json",
-			"bolas4.png", "bolas4.json", "bolas5.png", "bolas5.json", "bolasEspeciales.png", "bolasEspeciales.json"],
+			"bolas4.png", "bolas4.json", "bolas5.png", "bolas5.json", "bolaEspecial.png", "bolaEspecial.json"],
 
 			function() {
 		Q.compileSheets("backgrounds.png", "backgrounds.json");
 		Q.compileSheets("player.png", "player.json");
+		Q.compileSheets("arpon.png", "arpon.json");
 		Q.compileSheets("bolas1.png", "bolas1.json");
 		Q.compileSheets("bolas2.png", "bolas2.json");
 		Q.compileSheets("bolas3.png", "bolas3.json");
 		Q.compileSheets("bolas4.png", "bolas4.json");
 		Q.compileSheets("bolas5.png", "bolas5.json");
-		Q.compileSheets("bolaEspecial.png", "bolasEspecial.json");
+		Q.compileSheets("bolaEspecial.png", "bolaEspecial.json");
 
 		Q.state.reset({refresh:5, current:5, changeBackground:0, nBackground:1, ammo:2});
 
@@ -94,6 +95,10 @@ var game = function() {
 
 	Q.animations("bolaEspecial", {
 		change: {frames: [0,1], rate: 3}
+	});
+	
+	Q.animations("arpon", {
+		change: {frames: [0,1], rate: 1}
 	});
 
 //-------------BACKGROUND_SPRITE----------------
@@ -319,7 +324,7 @@ var game = function() {
 			this.add('2d, animation, aiBounce');
 		}, 
 
-		step:function(){
+		step:function() {
 			this.play("change", 1);
 
 			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
@@ -334,7 +339,8 @@ var game = function() {
 	Q.MovingSprite.extend("Harpoon",{
 		init:function(p) {
 			this._super(p,{
-				asset:"arpon.png",
+				sprite: "arpon",
+				sheet: "arpon",
 				scale:2,
 				y:666,
 				type: Q.SPRITE_FRIENDLY,
@@ -352,6 +358,8 @@ var game = function() {
 		},
 
 		step: function(dt) {
+			this.play("change", 1);
+			
 			this.p.y += this.p.vy * dt;
 			this.stage.collide(this);
 		}
