@@ -21,7 +21,7 @@ var game = function() {
 		stage.insert(new Q.Up_Edge());
 		stage.insert(new Q.Down_Edge());
 		stage.insert(new Q.Player());
-		//stage.on('poststep', this, gameLoop);
+		stage.on('poststep', this, gameLoop);
 	});
 
 	// TODO: AL cargar todos los backgrounds se termina el juego
@@ -110,7 +110,6 @@ var game = function() {
 				gravity: 0,
 				scale:3
 			});
-			this.add('2d');
 		}
 	});
 
@@ -124,7 +123,6 @@ var game = function() {
 				gravity: 0,
 				scale:3
 			});
-			this.add('2d');
 		}
 	});
 
@@ -138,7 +136,6 @@ var game = function() {
 				gravity: 0,
 				scale:3
 			});
-			this.add('2d');
 		}
 	});
 
@@ -153,7 +150,6 @@ var game = function() {
 				gravity: 0,
 				scale:3
 			});
-			this.add('2d');
 		}
 	});
 
@@ -316,16 +312,15 @@ var game = function() {
 	});		
 
 //-------------HARPOON_SPRITE----------------
-	Q.Sprite.extend("Harpoon",{
+	Q.MovingSprite.extend("Harpoon",{
 		init:function(p) {
 			this._super(p,{
 				asset:"arpon.png",
 				scale:2,
-				y:500,
+				y:568,
 				vy: -250,
 				gravity: 0,
 			});
-			//this.add('2d');
 		},
 	});
 
@@ -337,7 +332,8 @@ var game = function() {
 				sheet:"player",
 				frame:4,
 				x:400,
-				y:400,
+				y:520,
+				gravity:0,
 				playing: true,
 				scale:2,
 				jumpSpeed:0
