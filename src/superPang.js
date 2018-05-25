@@ -98,7 +98,7 @@ var game = function() {
 	});
 	
 	Q.animations("arpon", {
-		change: {frames: [0,1], rate: 1}
+		change: {frames: [0,1], rate: 1/8}
 	});
 
 //-------------BACKGROUND_SPRITE----------------
@@ -309,7 +309,7 @@ var game = function() {
 		}
 	});
 
-//-------------BOLASESPECIALES_SPRITE----------------
+//-------------BOLAESPECIAL_SPRITE----------------
 	Q.Sprite.extend("BolaEspecial",{
 		init:function(p){
 			this._super(p,{
@@ -341,12 +341,14 @@ var game = function() {
 			this._super(p,{
 				sprite: "arpon",
 				sheet: "arpon",
+				frame: 0,
 				scale:2,
-				y:666,
+				y:854,
 				type: Q.SPRITE_FRIENDLY,
 				collisionMask: Q.SPRITE_ENEMY,
 				vy: -250
 			});
+			this.add('animation');
 			this.on("hit",this,"collision");
 		},
 
@@ -358,10 +360,9 @@ var game = function() {
 		},
 
 		step: function(dt) {
-			this.play("change", 1);
-			
 			this.p.y += this.p.vy * dt;
 			this.stage.collide(this);
+			this.play("change", 1);
 		}
 	});
 
