@@ -35,18 +35,14 @@ var game = function() {
 			Q.state.set('current', Q.state.p.refresh);
 			var xRandom = 0;
 
-			if (Q.state.p.nBackground === 40) {
-				// Creamos bola especial de victoria
-				// El numero aleatorio tiene que ser diferente por el tamaño de la bola
+			if ((Q.state.p.nBackground === 40) && (Q.state.p.changeBackground === 0)) {
 				xRandom = Math.floor((Math.random() * 600) + 100);
 				Q.stage().insert(new Q.BolaEspecial({x:xRandom}));
 			}
-			else {
+			else if(Q.state.p.nBackground < 40){
 				xRandom = Math.floor((Math.random() * 600) + 100);
 				Q.stage().insert(new Q.Bolas1({x:xRandom}));
 			}
-
-
 			if (Q.state.p.changeBackground === 3) {
 				Q.stage(0).insert(new Q.Backgrounds({frame:Q.state.p.nBackground}));
 				Q.state.set('changeBackground', -1);
@@ -76,7 +72,7 @@ var game = function() {
 		Q.compileSheets("bolas5.png", "bolas5.json");
 		Q.compileSheets("bolaEspecial.png", "bolaEspecial.json");
 
-		Q.state.reset({refresh:5, current:5, changeBackground:0, nBackground:1, ammo:2});
+		Q.state.reset({refresh:18, current:1, changeBackground:0, nBackground:1, ammo:3});
 
 		Q.stageScene("back", 0);
 		Q.stageScene("level", 1);
@@ -154,7 +150,6 @@ var game = function() {
 		}
 	});
 
-
 //-------------UP_EDGE_SPRITE----------------
 	Q.Sprite.extend("Up_Edge",{
 		init:function(p){
@@ -169,6 +164,8 @@ var game = function() {
 			});
 		}
 	});
+
+
 
 //-------------BOLAS1_SPRITE----------------
 	Q.Sprite.extend("Bolas1",{
@@ -205,6 +202,10 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
+				var bola21 = new Q.Bolas2({x:this.p.x, y:this.p.y, vx:175});
+				this.stage.insert(bola21);
+				var bola22 = new Q.Bolas2({x:this.p.x, y:this.p.y, vx:-175});
+				this.stage.insert(bola22);
 			}
 		}
 	});
@@ -219,10 +220,15 @@ var game = function() {
 				x:200,
 				y:200,
 				vx: 175,
+				vy:-350,
 				gravity: 0.5,
+				type: Q.SPRITE_PARTICLE,
+				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
 				scale:2
 			});
 			this.add('2d, aiBounce');
+			this.on("hit",this,"collision");
+
 		},
 
 		step: function() {
@@ -230,7 +236,19 @@ var game = function() {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -625;
 				}
-			})						
+			});					
+		},
+
+		collision: function(col) {
+			if(col.obj.isA("Harpoon")){
+				col.obj.destroy();
+				Q.state.set('ammo', Q.state.p.ammo+1);
+				this.destroy();
+				var bola31 = new Q.Bolas3({x:this.p.x, y:this.p.y, vx:175});
+				this.stage.insert(bola31);
+				var bola32 = new Q.Bolas3({x:this.p.x, y:this.p.y, vx:-175});
+				this.stage.insert(bola32);
+			}
 		}
 	});
 
@@ -244,10 +262,14 @@ var game = function() {
 				x: 200,
 				y: 200,
 				vx: 175,
+				vy:-350,
 				gravity: 0.5,
+				type: Q.SPRITE_PARTICLE,
+				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
 				scale:2
 			});
 			this.add('2d, aiBounce');
+			this.on("hit",this,"collision");
 		},
 
 		step: function() {
@@ -255,7 +277,19 @@ var game = function() {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -550;
 				}
-			})						
+			});						
+		},
+
+		collision: function(col) {
+			if(col.obj.isA("Harpoon")){
+				col.obj.destroy();
+				Q.state.set('ammo', Q.state.p.ammo+1);
+				this.destroy();
+				var bola41 = new Q.Bolas4({x:this.p.x, y:this.p.y, vx:175});
+				this.stage.insert(bola41);
+				var bola42 = new Q.Bolas4({x:this.p.x, y:this.p.y, vx:-175});
+				this.stage.insert(bola42);
+			}
 		}
 	});
 
@@ -269,10 +303,14 @@ var game = function() {
 				x:200,
 				y:200,
 				vx: 175,
+				vy:-350,
 				gravity: 0.5,
+				type: Q.SPRITE_PARTICLE,
+				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
 				scale:2
 			});
 			this.add('2d, aiBounce');
+			this.on("hit",this,"collision");
 		},
 
 		step: function() {
@@ -280,7 +318,19 @@ var game = function() {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -450;
 				}
-			})						
+			});						
+		},
+
+		collision: function(col) {
+			if(col.obj.isA("Harpoon")){
+				col.obj.destroy();
+				Q.state.set('ammo', Q.state.p.ammo+1);
+				this.destroy();
+				var bola51 = new Q.Bolas5({x:this.p.x, y:this.p.y, vx:175});
+				this.stage.insert(bola51);
+				var bola52 = new Q.Bolas5({x:this.p.x, y:this.p.y, vx:-175});
+				this.stage.insert(bola52);
+			}
 		}
 	});
 
@@ -294,10 +344,14 @@ var game = function() {
 				x:200,
 				y:200,
 				vx: 175,
+				vy:-350,
 				gravity: 0.5,
+				type: Q.SPRITE_PARTICLE,
+				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
 				scale:2
 			});
 			this.add('2d, aiBounce');
+			this.on("hit",this,"collision");
 		},
 
 		step: function() {
@@ -305,7 +359,15 @@ var game = function() {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -350;
 				}
-			})						
+			});						
+		},
+
+		collision: function(col) {
+			if(col.obj.isA("Harpoon")){
+				col.obj.destroy();
+				Q.state.set('ammo', Q.state.p.ammo+1);
+				this.destroy();
+			}
 		}
 	});
 
@@ -319,9 +381,12 @@ var game = function() {
 				x:200,
 				y:200,
 				gravity: 0.5,
+				type: Q.SPRITE_PARTICLE,
+				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
 				scale:2
 			});
 			this.add('2d, animation, aiBounce');
+			this.on("hit",this,"collision");
 		}, 
 
 		step:function() {
@@ -331,9 +396,19 @@ var game = function() {
 				if (collision.obj.isA("Down_Edge")) {
 					this.p.vy = -550;
 				}
-			})
+			});						
+		},
+
+		collision: function(col) {
+			if(col.obj.isA("Harpoon")){
+				col.obj.destroy();
+				Q.state.set('ammo', Q.state.p.ammo+1);
+				this.destroy();
+			}
 		}
 	});		
+
+
 
 //-------------HARPOON_SPRITE----------------
 	Q.MovingSprite.extend("Harpoon",{
@@ -365,6 +440,8 @@ var game = function() {
 			this.play("change", 1);
 		}
 	});
+
+
 
 //-------------PLAYER_SPRITE----------------
 	Q.Sprite.extend("Player",{
