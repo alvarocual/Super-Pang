@@ -167,6 +167,9 @@ var game = function() {
 
 
 
+//-------------DEFAULT_BALL----------------
+
+
 //-------------BOLAS1_SPRITE----------------
 	Q.Sprite.extend("Bolas1",{
 		init:function(p){
@@ -206,6 +209,15 @@ var game = function() {
 				this.stage.insert(bola21);
 				var bola22 = new Q.Bolas2({x:this.p.x, y:this.p.y, vx:-175});
 				this.stage.insert(bola22);
+			}
+			if(col.obj.isA("Player")){
+				col.obj.p.vx=500;
+				col.obj.p.vy=-300;
+				col.obj.p.gravity=1.2;
+				col.obj.p.type = Q.SPRITE_PARTICLE;
+				col.obj.p.collisionMask = Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT;
+				col.obj.del("platformerControls");
+				col.obj.play("died", 3);
 			}
 		}
 	});
@@ -249,6 +261,12 @@ var game = function() {
 				var bola32 = new Q.Bolas3({x:this.p.x, y:this.p.y, vx:-175});
 				this.stage.insert(bola32);
 			}
+			if(col.obj.isA("Player")){
+				col.obj.p.vx=500;
+				col.obj.p.vy=-300;
+				col.obj.p.gravity=1.2;
+				col.obj.play("died", 3);
+			}
 		}
 	});
 
@@ -289,6 +307,12 @@ var game = function() {
 				this.stage.insert(bola41);
 				var bola42 = new Q.Bolas4({x:this.p.x, y:this.p.y, vx:-175});
 				this.stage.insert(bola42);
+			}
+			if(col.obj.isA("Player")){
+				col.obj.p.vx=500;
+				col.obj.p.vy=-300;
+				col.obj.p.gravity=1.2;
+				col.obj.play("died", 3);
 			}
 		}
 	});
@@ -331,6 +355,12 @@ var game = function() {
 				var bola52 = new Q.Bolas5({x:this.p.x, y:this.p.y, vx:-175});
 				this.stage.insert(bola52);
 			}
+			if(col.obj.isA("Player")){
+				col.obj.p.vx=500;
+				col.obj.p.vy=-300;
+				col.obj.p.gravity=1.2;
+				col.obj.play("died", 3);
+			}
 		}
 	});
 
@@ -368,6 +398,12 @@ var game = function() {
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
 			}
+			if(col.obj.isA("Player")){
+				col.obj.p.vx=500;
+				col.obj.p.vy=-300;
+				col.obj.p.gravity=1.2;
+				col.obj.play("died", 3);
+			}
 		}
 	});
 
@@ -404,6 +440,12 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
+			}
+			if(col.obj.isA("Player")){
+				col.obj.p.vx=500;
+				col.obj.p.vy=-300;
+				col.obj.p.gravity=1.2;
+				col.obj.play("died", 3);
 			}
 		}
 	});		
@@ -455,6 +497,7 @@ var game = function() {
 				gravity:0,
 				playing: true,
 				type: Q.SPRITE_FRIENDLY,
+				collisionMask:Q.SPRITE_PARTICLE | Q.SPRITE_DEFAULT,
 				scale:2,
 				jumpSpeed:0
 			});
@@ -466,6 +509,7 @@ var game = function() {
 			/* Wait until the firing animation has played until
 			 actually launching the harpoon*/
 			this.on("shooted",this,"launchHarpoon");
+			this.on("dying", this, "kill");
 		},
 
 		step:function(dt){
@@ -493,7 +537,10 @@ var game = function() {
 		launchHarpoon: function(){
 			var harpoon = new Q.Harpoon({x:this.p.x});
 			this.stage.insert(harpoon);
-		}
+		},
 
+		kill: function(){
+			this.destroy();
+		}
 	});
 }
