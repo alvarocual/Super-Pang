@@ -34,7 +34,7 @@ var game = function() {
 			Q.state.set('current', Q.state.p.refresh);
 			var xRandom = 0;
 
-			if ((Q.state.p.nBackground === 2) && (Q.state.p.changeBackground === 0)) {
+			if (Q.state.p.nBackground === 40) {
 				xRandom = Math.floor((Math.random() * 600) + 100);
 				Q.stage().insert(new Q.BolaEspecial({x:xRandom}));
 			}
@@ -42,14 +42,8 @@ var game = function() {
 				xRandom = Math.floor((Math.random() * 600) + 100);
 				Q.stage().insert(new Q.Bolas1({x:xRandom}));
 			}
-			if (Q.state.p.changeBackground === 3) {
-				Q.stage(0).insert(new Q.Backgrounds({frame:Q.state.p.nBackground}));
-				Q.state.set('changeBackground', -1);
-				Q.state.set('nBackground', Q.state.p.nBackground + 1);
-				
-			}
-
-			Q.state.set('changeBackground', Q.state.p.changeBackground + 1);
+			Q.stage(0).insert(new Q.Backgrounds({frame:Q.state.p.nBackground}));
+			Q.state.set('nBackground', Q.state.p.nBackground + 1);
 		}
 	};
 
@@ -71,7 +65,7 @@ var game = function() {
 		Q.compileSheets("bolas5.png", "bolas5.json");
 		Q.compileSheets("bolaEspecial.png", "bolaEspecial.json");
 
-		Q.state.reset({refresh:18, current:1, changeBackground:0, nBackground:1, ammo:3, endGame:0});
+		Q.state.reset({refresh:20, current:1, nBackground:0, ammo:3, endGame:0});
 
 		Q.stageScene("back", 0);
 		Q.stageScene("level", 1);
@@ -83,9 +77,9 @@ var game = function() {
 		move_right: 	{ frames: [3,0,1,2],  rate: 1/8, flip:"right" }, 
 		move_left: 		{ frames: [3,0,1,2],  rate: 1/8, flip:"left" },
 		stand: 			{ frames: [4],		  rate: 1/8 },
-		died: 			{ frames: [6],		  rate: 1,	 loop: false, trigger:"dying" },
+		died: 			{ frames: [6],		  rate: 1/40, loop: false, trigger:"dying" },
 		win:  		    { frames: [7],		  rate: 1,	 loop: false},
-		shoot:  		{ frames: [5],		  rate: 1/8, loop: false, trigger:"shooted", next: "stand" }
+		shoot:  		{ frames: [5],		  rate: 1/8, loop: false, trigger:"shooted" }
 	});
 
 	Q.animations("bolaEspecial", {
@@ -166,9 +160,6 @@ var game = function() {
 
 
 
-//-------------DEFAULT_BALL----------------
-
-
 //-------------BOLAS1_SPRITE----------------
 	Q.Sprite.extend("Bolas1",{
 		init:function(p){
@@ -210,11 +201,7 @@ var game = function() {
 				this.stage.insert(bola22);
 			}
 			if(col.obj.isA("Player")){
-				col.obj.p.vx=500;
-				col.obj.p.vy=-300;
-				col.obj.p.gravity=1.2;
-				col.obj.p.type = Q.SPRITE_PARTICLE;
-				col.obj.p.collisionMask = Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT;
+				col.obj.p.playing = false;
 				col.obj.del("platformerControls");
 				col.obj.play("died", 3);
 			}
@@ -230,7 +217,7 @@ var game = function() {
 				frame:0,
 				x:200,
 				y:200,
-				vx: 175,
+				vx: 150,
 				vy:-350,
 				gravity: 0.5,
 				type: Q.SPRITE_PARTICLE,
@@ -261,9 +248,8 @@ var game = function() {
 				this.stage.insert(bola32);
 			}
 			if(col.obj.isA("Player")){
-				col.obj.p.vx=500;
-				col.obj.p.vy=-300;
-				col.obj.p.gravity=1.2;
+				col.obj.p.playing = false;
+				col.obj.del("platformerControls");
 				col.obj.play("died", 3);
 			}
 		}
@@ -278,7 +264,7 @@ var game = function() {
 				frame:0,
 				x: 200,
 				y: 200,
-				vx: 175,
+				vx: 150,
 				vy:-350,
 				gravity: 0.5,
 				type: Q.SPRITE_PARTICLE,
@@ -308,9 +294,8 @@ var game = function() {
 				this.stage.insert(bola42);
 			}
 			if(col.obj.isA("Player")){
-				col.obj.p.vx=500;
-				col.obj.p.vy=-300;
-				col.obj.p.gravity=1.2;
+				col.obj.p.playing = false;
+				col.obj.del("platformerControls");
 				col.obj.play("died", 3);
 			}
 		}
@@ -325,7 +310,7 @@ var game = function() {
 				frame:0,
 				x:200,
 				y:200,
-				vx: 175,
+				vx: 150,
 				vy:-350,
 				gravity: 0.5,
 				type: Q.SPRITE_PARTICLE,
@@ -355,9 +340,8 @@ var game = function() {
 				this.stage.insert(bola52);
 			}
 			if(col.obj.isA("Player")){
-				col.obj.p.vx=500;
-				col.obj.p.vy=-300;
-				col.obj.p.gravity=1.2;
+				col.obj.p.playing = false;
+				col.obj.del("platformerControls");
 				col.obj.play("died", 3);
 			}
 		}
@@ -372,7 +356,7 @@ var game = function() {
 				frame:0,
 				x:200,
 				y:200,
-				vx: 175,
+				vx: 150,
 				vy:-350,
 				gravity: 0.5,
 				type: Q.SPRITE_PARTICLE,
@@ -398,9 +382,8 @@ var game = function() {
 				this.destroy();
 			}
 			if(col.obj.isA("Player")){
-				col.obj.p.vx=500;
-				col.obj.p.vy=-300;
-				col.obj.p.gravity=1.2;
+				col.obj.p.playing = false;
+				col.obj.del("platformerControls");
 				col.obj.play("died", 3);
 			}
 		}
@@ -412,7 +395,7 @@ var game = function() {
 			this._super(p,{
 				sprite: "bolaEspecial",
 				sheet: "bolaEspecial",
-				vx: 175,
+				vx: 150,
 				x:200,
 				y:200,
 				gravity: 0.5,
@@ -442,9 +425,8 @@ var game = function() {
 				this.destroy();
 			}
 			if(col.obj.isA("Player")){
-				col.obj.p.vx=500;
-				col.obj.p.vy=-300;
-				col.obj.p.gravity=1.2;
+				col.obj.p.playing = false;
+				col.obj.del("platformerControls");
 				col.obj.play("died", 3);
 			}
 		}
@@ -463,7 +445,7 @@ var game = function() {
 				y:854,
 				type: Q.SPRITE_FRIENDLY,
 				collisionMask: Q.SPRITE_ENEMY,
-				vy: -250
+				vy: -400
 			});
 			this.add('animation');
 			this.on("hit",this,"collision");
@@ -529,14 +511,17 @@ var game = function() {
 			if (Q.state.p.endGame === 1) {
 					this.play("win", 3);
 					this.p.playing = false;
-					Q.stage().pause;
+					this.del("platformerControls");
+					Q.stage().pause();
 			}
 		},
 
 		fire:function(){
-			if(Q.state.p.ammo > 0){
-				this.play("shoot", 3);
-				Q.state.set('ammo', Q.state.p.ammo-1);
+			if(this.p.playing){
+				if(Q.state.p.ammo > 0){
+					this.play("shoot", 3);
+					Q.state.set('ammo', Q.state.p.ammo-1);
+				}
 			}
 		},
 
@@ -546,7 +531,7 @@ var game = function() {
 		},
 
 		kill: function(){
-			this.destroy();
+			Q.stage().pause();
 		}
 	});
 }
