@@ -25,7 +25,6 @@ var game = function() {
 		stage.on('poststep', this, gameLoop);
 	});
 
-	// TODO: AL cargar todos los backgrounds se termina el juego
 	gameLoop = function(dt) {
 		
 		Q.state.set('current', Q.state.p.current - dt);
@@ -35,7 +34,7 @@ var game = function() {
 			Q.state.set('current', Q.state.p.refresh);
 			var xRandom = 0;
 
-			if ((Q.state.p.nBackground === 40) && (Q.state.p.changeBackground === 0)) {
+			if ((Q.state.p.nBackground === 2) && (Q.state.p.changeBackground === 0)) {
 				xRandom = Math.floor((Math.random() * 600) + 100);
 				Q.stage().insert(new Q.BolaEspecial({x:xRandom}));
 			}
@@ -72,7 +71,7 @@ var game = function() {
 		Q.compileSheets("bolas5.png", "bolas5.json");
 		Q.compileSheets("bolaEspecial.png", "bolaEspecial.json");
 
-		Q.state.reset({refresh:18, current:1, changeBackground:0, nBackground:1, ammo:3});
+		Q.state.reset({refresh:18, current:1, changeBackground:0, nBackground:1, ammo:3, endGame:0});
 
 		Q.stageScene("back", 0);
 		Q.stageScene("level", 1);
@@ -85,7 +84,7 @@ var game = function() {
 		move_left: 		{ frames: [3,0,1,2],  rate: 1/8, flip:"left" },
 		stand: 			{ frames: [4],		  rate: 1/8 },
 		died: 			{ frames: [6],		  rate: 1,	 loop: false, trigger:"dying" },
-		victory:  		{ frames: [7],		  rate: 1,	 loop: false },
+		win:  		    { frames: [7],		  rate: 1,	 loop: false},
 		shoot:  		{ frames: [5],		  rate: 1/8, loop: false, trigger:"shooted", next: "stand" }
 	});
 
@@ -437,6 +436,7 @@ var game = function() {
 
 		collision: function(col) {
 			if(col.obj.isA("Harpoon")){
+				Q.state.set('endGame', 1);
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
@@ -524,6 +524,12 @@ var game = function() {
 				}
 				else
 					this.play("stand", 1);
+			}
+
+			if (Q.state.p.endGame === 1) {
+					this.play("win", 3);
+					this.p.playing = false;
+					Q.stage().pause;
 			}
 		},
 
