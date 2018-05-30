@@ -34,7 +34,7 @@ var game = function() {
 			Q.state.set('current', Q.state.p.refresh);
 			var xRandom = 0;
 
-			if (Q.state.p.nBackground === 3) {
+			if (Q.state.p.nBackground === 40) {
 				xRandom = Math.floor((Math.random() * 600) + 100);
 				Q.stage().insert(new Q.BolaEspecial({x:xRandom}));
 			}
