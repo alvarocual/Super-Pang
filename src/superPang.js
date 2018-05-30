@@ -34,13 +34,13 @@ var game = function() {
 			Q.state.set('current', Q.state.p.refresh);
 			var xRandom = 0;
 
-			if (Q.state.p.nBackground === 40) {
+			if (Q.state.p.nBackground === 3) {
 				xRandom = Math.floor((Math.random() * 600) + 100);
 				Q.stage().insert(new Q.BolaEspecial({x:xRandom}));
 			}
 			else if(Q.state.p.nBackground < 40){
 				xRandom = Math.floor((Math.random() * 600) + 100);
-				Q.stage().insert(new Q.Bolas1({x:xRandom}));
+				Q.stage().insert(new Q.Bolas2({x:xRandom, vy:0}));
 			}
 			Q.stage(0).insert(new Q.Backgrounds({frame:Q.state.p.nBackground}));
 			Q.state.set('nBackground', Q.state.p.nBackground + 1);
@@ -65,7 +65,7 @@ var game = function() {
 		Q.compileSheets("bolas5.png", "bolas5.json");
 		Q.compileSheets("bolaEspecial.png", "bolaEspecial.json");
 
-		Q.state.reset({refresh:20, current:1, nBackground:0, ammo:3, endGame:0});
+		Q.state.reset({refresh:10, current:1, nBackground:0, ammo:3, endGame:0});
 
 		Q.stageScene("back", 0);
 		Q.stageScene("level", 1);
@@ -215,8 +215,7 @@ var game = function() {
 				sprite: "bolas2",
 				sheet: "bolas2",
 				frame:0,
-				x:200,
-				y:200,
+				y:78,
 				vx: 150,
 				vy:-350,
 				gravity: 0.5,
@@ -445,7 +444,7 @@ var game = function() {
 				y:854,
 				type: Q.SPRITE_FRIENDLY,
 				collisionMask: Q.SPRITE_ENEMY,
-				vy: -400
+				vy: -360
 			});
 			this.add('animation');
 			this.on("hit",this,"collision");
