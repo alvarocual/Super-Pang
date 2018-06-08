@@ -22,6 +22,7 @@ var game = function() {
 		stage.insert(new Q.Up_Edge());
 		stage.insert(new Q.Down_Edge());
 		stage.insert(new Q.Player());
+		Q.audio.play("bandaSonora.mp3", {loop:true});
 		stage.on('poststep', this, gameLoop);
 	});
 
@@ -61,11 +62,7 @@ var game = function() {
 			"bolas4.png", "bolas4.json", "bolas5.png", "bolas5.json", "bolaEspecial.png", "bolaEspecial.json",
 			"explosion2.png", "explosion2.json", "explosion3.png", "explosion3.json",
 			"explosion4.png", "explosion4.json", "explosion5.png", "explosion5.json",
-			"burbuja_pop.mp3", "disparo.mp3", "gameover.mp3",
-			"angkorwat.mp3", "antartic.mp3", "athens.mp3", "easterisland.mp3",
-			"egypt.mp3", "emeraldtemple.mp3", "gettinglate.mp3", "guilin.mp3",
-			"inicio.mp3", "kenya.mp3", "london.mp3", "maya.mp3", "mtfuji.mp3",
-			"space.mp3", "tajmahal.mp3", "unknown.mp3"],
+			"burbuja_pop.mp3", "rectangulo_pop.mp3", "gameover.mp3", "inicio.mp3", "bandaSonora.mp3"],
 
 			function() {
 		Q.compileSheets("backgrounds.png", "backgrounds.json");
@@ -484,6 +481,8 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
+
+				Q.audio.play("rectangulo_pop.mp3");
 				var bola21 = new Q.Rectangulos2({x:this.p.x, y:this.p.y, vx: 150});
 				this.stage.insert(bola21);
 				var bola22 = new Q.Rectangulos2({x:this.p.x, y:this.p.y, vx:-150});
@@ -534,6 +533,8 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
+
+				Q.audio.play("rectangulo_pop.mp3");
 				var bola31 = new Q.Rectangulos3({x:this.p.x, y:this.p.y, vx: 150});
 				this.stage.insert(bola31);
 				var bola32 = new Q.Rectangulos3({x:this.p.x, y:this.p.y, vx:-150});
@@ -584,6 +585,7 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
+				Q.audio.play("rectangulo_pop.mp3");
 			}
 			if(col.obj.isA("Player")){
 				col.obj.p.playing = false;
@@ -770,7 +772,6 @@ var game = function() {
 		fire:function(){
 			if(this.p.playing){
 				if(Q.state.p.ammo > 0){
-					Q.audio.play("disparo.mp3");
 					this.play("shoot", 3);
 					Q.state.set('ammo', Q.state.p.ammo-1);
 				}
@@ -783,6 +784,7 @@ var game = function() {
 		},
 
 		kill: function(){
+			Q.audio.stop("bandaSonora.mp3");
 			Q.audio.play("gameover.mp3");
 			Q.stage().pause();
 		}
