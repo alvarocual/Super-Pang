@@ -37,8 +37,19 @@
 ## BolasEspeciales:
 	- Ancho: 32
 	- Alto: 26
+
+## Rectangulos2: 
+	- Ancho: 30
+	- Alto: 26
+
+## Rectangulos3: 
+	- Ancho: 15
+	- Alto: 12
+
+## Rectangulos4: 
+	- Ancho: 9
+	- Alto: 8
 	
-  
 # Bonificadores
 	- Ancho: 20
 	- Alto: 20
