@@ -41,6 +41,10 @@ var game = function() {
 			else if(Q.state.p.nBackground < 40){
 				xRandom = Math.floor((Math.random() * 600) + 100);
 				Q.stage().insert(new Q.Bolas2({x:xRandom, vy:0}));
+
+				if (((Q.state.p.nBackground % 2) === 0) && (Q.state.p.nBackground != 0)) {
+					Q.stage().insert(new Q.Rectangulos1({x:300}));
+				}
 			}
 			Q.stage(0).insert(new Q.Backgrounds({frame:Q.state.p.nBackground}));
 			Q.state.set('nBackground', Q.state.p.nBackground + 1);
@@ -51,21 +55,33 @@ var game = function() {
 //-------------LOAD_RESOURCES----------------
 	Q.load(["backgrounds.png", "backgrounds.json", "player.png", "player.json", "arpon.png", "arpon.json",
 			"left_edge.png", "right_edge.png", "down_edge.png", "up_edge.png",
-			"bolas1.png", "bolas1.json", "bolas2.png", "bolas2.json", "bolas3.png", "bolas3.json",
-			"bolas4.png", "bolas4.json", "bolas5.png", "bolas5.json", "bolaEspecial.png", "bolaEspecial.json"],
+			"rectangulos1.png", "rectangulos1.json", "rectangulos2.png", "rectangulos2.json", 
+			"rectangulos3.png", "rectangulos3.json",
+			"bolas2.png", "bolas2.json", "bolas3.png", "bolas3.json",
+			"bolas4.png", "bolas4.json", "bolas5.png", "bolas5.json", "bolaEspecial.png", "bolaEspecial.json",
+			"explosion2.png", "explosion2.json", "explosion3.png", "explosion3.json",
+			"explosion4.png", "explosion4.json", "explosion5.png", "explosion5.json"],
 
 			function() {
 		Q.compileSheets("backgrounds.png", "backgrounds.json");
 		Q.compileSheets("player.png", "player.json");
 		Q.compileSheets("arpon.png", "arpon.json");
-		Q.compileSheets("bolas1.png", "bolas1.json");
 		Q.compileSheets("bolas2.png", "bolas2.json");
 		Q.compileSheets("bolas3.png", "bolas3.json");
 		Q.compileSheets("bolas4.png", "bolas4.json");
 		Q.compileSheets("bolas5.png", "bolas5.json");
+		Q.compileSheets("rectangulos1.png", "rectangulos1.json");
+		Q.compileSheets("rectangulos2.png", "rectangulos2.json");
+		Q.compileSheets("rectangulos3.png", "rectangulos3.json");
+
+		Q.compileSheets("explosion2.png", "explosion2.json");
+		Q.compileSheets("explosion3.png", "explosion3.json");
+		Q.compileSheets("explosion4.png", "explosion4.json");
+		Q.compileSheets("explosion5.png", "explosion5.json");
+
 		Q.compileSheets("bolaEspecial.png", "bolaEspecial.json");
 
-		Q.state.reset({refresh:10, current:1, nBackground:0, ammo:3, endGame:0});
+		Q.state.reset({refresh:11, current:1, nBackground:0, ammo:3, endGame:0});
 
 		Q.stageScene("back", 0);
 		Q.stageScene("level", 1);
@@ -83,12 +99,41 @@ var game = function() {
 	});
 
 	Q.animations("bolaEspecial", {
-		change: {frames: [0,1], rate: 3}
+		change: {frames: [0,1], rate: 2}
 	});
 	
 	Q.animations("arpon", {
 		change: {frames: [0,1], rate: 1/8}
 	});
+
+	Q.animations("rectangulos1", {
+		change: {frames: [0,1,2], rate: 1/10}
+	});
+
+	Q.animations("rectangulos2", {
+		change: {frames: [0,1,2], rate: 1/10}
+	});
+
+	Q.animations("rectangulos3", {
+		change: {frames: [0,1,2], rate: 1/10}
+	});
+
+	Q.animations("explosion2", {
+		boom: {frames: [0,1,2], rate: 1/10}
+	});
+
+	Q.animations("explosion3", {
+		boom: {frames: [0,1,2], rate: 1/10}
+	});
+
+	Q.animations("explosion4", {
+		boom: {frames: [0,1,2], rate: 1/10}
+	});
+
+	Q.animations("explosion5", {
+		boom: {frames: [0,1,2], rate: 1/10}
+	});
+
 
 //-------------BACKGROUND_SPRITE----------------
 	Q.Sprite.extend("Backgrounds",{
@@ -159,55 +204,6 @@ var game = function() {
 	});
 
 
-
-//-------------BOLAS1_SPRITE----------------
-	Q.Sprite.extend("Bolas1",{
-		init:function(p){
-			this._super(p,{
-				sprite: "bolas1",
-				sheet: "bolas1",
-				frame:0,
-				y:78,
-				vx: 175,
-				type: Q.SPRITE_PARTICLE,
-				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
-				gravity: 0.5,
-				scale:2
-			});
-			this.add('2d, aiBounce');
-			this.on("hit",this,"collision");
-		},
-
-		step: function() {
-			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
-				if (collision.obj.isA("Down_Edge")) {
-					this.p.vy = -700;
-				}
-
-				if (collision.obj.isA("Up_Edge")) {
-					this.p.vy = 350;
-				}
-			});						
-		},
-
-		collision: function(col) {
-			if(col.obj.isA("Harpoon")){
-				col.obj.destroy();
-				Q.state.set('ammo', Q.state.p.ammo+1);
-				this.destroy();
-				var bola21 = new Q.Bolas2({x:this.p.x, y:this.p.y, vx:175});
-				this.stage.insert(bola21);
-				var bola22 = new Q.Bolas2({x:this.p.x, y:this.p.y, vx:-175});
-				this.stage.insert(bola22);
-			}
-			if(col.obj.isA("Player")){
-				col.obj.p.playing = false;
-				col.obj.del("platformerControls");
-				col.obj.play("died", 3);
-			}
-		}
-	});
-
 //-------------BOLAS2_SPRITE----------------
 	Q.Sprite.extend("Bolas2",{
 		init:function(p){
@@ -241,9 +237,12 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
-				var bola31 = new Q.Bolas3({x:this.p.x, y:this.p.y, vx:175});
+
+				//Animacion explosion
+
+				var bola31 = new Q.Bolas3({x:this.p.x, y:this.p.y, vx:150});
 				this.stage.insert(bola31);
-				var bola32 = new Q.Bolas3({x:this.p.x, y:this.p.y, vx:-175});
+				var bola32 = new Q.Bolas3({x:this.p.x, y:this.p.y, vx:-150});
 				this.stage.insert(bola32);
 			}
 			if(col.obj.isA("Player")){
@@ -287,9 +286,9 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
-				var bola41 = new Q.Bolas4({x:this.p.x, y:this.p.y, vx:175});
+				var bola41 = new Q.Bolas4({x:this.p.x, y:this.p.y, vx:150});
 				this.stage.insert(bola41);
-				var bola42 = new Q.Bolas4({x:this.p.x, y:this.p.y, vx:-175});
+				var bola42 = new Q.Bolas4({x:this.p.x, y:this.p.y, vx:-150});
 				this.stage.insert(bola42);
 			}
 			if(col.obj.isA("Player")){
@@ -333,9 +332,9 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
-				var bola51 = new Q.Bolas5({x:this.p.x, y:this.p.y, vx:175});
+				var bola51 = new Q.Bolas5({x:this.p.x, y:this.p.y, vx:150});
 				this.stage.insert(bola51);
-				var bola52 = new Q.Bolas5({x:this.p.x, y:this.p.y, vx:-175});
+				var bola52 = new Q.Bolas5({x:this.p.x, y:this.p.y, vx:-150});
 				this.stage.insert(bola52);
 			}
 			if(col.obj.isA("Player")){
@@ -372,6 +371,152 @@ var game = function() {
 					this.p.vy = -350;
 				}
 			});						
+		},
+
+		collision: function(col) {
+			if(col.obj.isA("Harpoon")){
+				col.obj.destroy();
+				Q.state.set('ammo', Q.state.p.ammo+1);
+				this.destroy();
+			}
+			if(col.obj.isA("Player")){
+				col.obj.p.playing = false;
+				col.obj.del("platformerControls");
+				col.obj.play("died", 3);
+			}
+		}
+	});
+
+//-------------RECTANGULOS1_SPRITE----------------
+	Q.Sprite.extend("Rectangulos1",{
+		init:function(p){
+			this._super(p,{
+				sprite: "rectangulos1",
+				sheet: "rectangulos1",
+				y: 78,
+				vx: 150,
+				vy: 150,
+				gravity: 0,
+				type: Q.SPRITE_PARTICLE,
+				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
+				scale:2
+			});
+			this.add('2d, animation, aiBounce');
+			this.on("hit",this,"collision");
+
+		},
+
+		step: function() {
+			this.play("change", 1);
+
+			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
+				if (collision.obj.isA("Down_Edge")) {
+					this.p.vy = -150;
+				}
+				else if (collision.obj.isA("Up_Edge")) {
+					this.p.vy = 150;
+				}
+			});					
+		},
+
+		collision: function(col) {
+			if(col.obj.isA("Harpoon")){
+				col.obj.destroy();
+				Q.state.set('ammo', Q.state.p.ammo+1);
+				this.destroy();
+				var bola21 = new Q.Rectangulos2({x:this.p.x, y:this.p.y, vx: 150});
+				this.stage.insert(bola21);
+				var bola22 = new Q.Rectangulos2({x:this.p.x, y:this.p.y, vx:-150});
+				this.stage.insert(bola22);
+			}
+			if(col.obj.isA("Player")){
+				col.obj.p.playing = false;
+				col.obj.del("platformerControls");
+				col.obj.play("died", 3);
+			}
+		}
+	});
+
+//-------------RECTANGULOS2_SPRITE----------------
+	Q.Sprite.extend("Rectangulos2",{
+		init:function(p){
+			this._super(p,{
+				sprite: "rectangulos2",
+				sheet: "rectangulos2",
+				y: 78,
+				vx: 150,
+				vy: -150,
+				gravity: 0,
+				type: Q.SPRITE_PARTICLE,
+				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
+				scale:2
+			});
+			this.add('2d, animation, aiBounce');
+			this.on("hit",this,"collision");
+
+		},
+
+		step: function() {
+			this.play("change", 1);
+
+			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
+				if (collision.obj.isA("Down_Edge")) {
+					this.p.vy = -150;
+				}
+				else if (collision.obj.isA("Up_Edge")) {
+					this.p.vy = 150;
+				}
+			});					
+		},
+
+		collision: function(col) {
+			if(col.obj.isA("Harpoon")){
+				col.obj.destroy();
+				Q.state.set('ammo', Q.state.p.ammo+1);
+				this.destroy();
+				var bola31 = new Q.Rectangulos3({x:this.p.x, y:this.p.y, vx: 150});
+				this.stage.insert(bola31);
+				var bola32 = new Q.Rectangulos3({x:this.p.x, y:this.p.y, vx:-150});
+				this.stage.insert(bola32);
+			}
+			if(col.obj.isA("Player")){
+				col.obj.p.playing = false;
+				col.obj.del("platformerControls");
+				col.obj.play("died", 3);
+			}
+		}
+	});
+
+//-------------RECTANGULOS3_SPRITE----------------
+	Q.Sprite.extend("Rectangulos3",{
+		init:function(p){
+			this._super(p,{
+				sprite: "rectangulos3",
+				sheet: "rectangulos3",
+				y: 78,
+				vx: 150,
+				vy: -150,
+				gravity: 0,
+				type: Q.SPRITE_PARTICLE,
+				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
+				scale:2
+			});
+			this.add('2d, animation, aiBounce');
+			this.on("hit",this,"collision");
+
+		},
+
+		step: function() {
+			this.play("change", 1);
+
+			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
+				if (collision.obj.isA("Down_Edge")) {
+					this.p.vy = -150;
+				}
+				else if (collision.obj.isA("Up_Edge")) {
+					this.p.vy = 150;
+				}
+			});					
 		},
 
 		collision: function(col) {

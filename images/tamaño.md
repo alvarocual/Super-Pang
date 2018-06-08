@@ -14,6 +14,10 @@
 	
   
 # Burbujas:
+## Bolas1:
+	- Ancho: 64
+	- Alto: 53
+
 ## Bolas2:
 	- Ancho: 48
 	- Alto: 40
@@ -33,7 +37,7 @@
 ## BolasEspeciales:
 	- Ancho: 32
 	- Alto: 26
-
+	
 ## Rectangulos1: 
 	- Ancho: 30
 	- Alto: 26
@@ -46,12 +50,10 @@
 	- Ancho: 9
 	- Alto: 8
 	
+  
 # Bonificadores
 	- Ancho: 20
 	- Alto: 20
-
-# Explosiones
- Mismo tamaño que las pelotas que representan
 	
 	
 # Arpones
