@@ -3,9 +3,9 @@ var game = function() {
 			.include("Sprites, Scenes, Input, 2D, Anim, Touch, TMX, UI, Audio")
 			.setup({width:768,
 					height:576,
-					maximize:true})
-					//audioSupported:["ogg", "mp3"]})
-			.controls().touch();
+					maximize:true,
+					audioSupported:["mp3"]})
+			.controls().touch().enableSound();
 			//Q.debug = true;
 
 
@@ -60,7 +60,12 @@ var game = function() {
 			"bolas2.png", "bolas2.json", "bolas3.png", "bolas3.json",
 			"bolas4.png", "bolas4.json", "bolas5.png", "bolas5.json", "bolaEspecial.png", "bolaEspecial.json",
 			"explosion2.png", "explosion2.json", "explosion3.png", "explosion3.json",
-			"explosion4.png", "explosion4.json", "explosion5.png", "explosion5.json"],
+			"explosion4.png", "explosion4.json", "explosion5.png", "explosion5.json",
+			"burbuja_pop.mp3", "disparo.mp3", "gameover.mp3",
+			"angkorwat.mp3", "antartic.mp3", "athens.mp3", "easterisland.mp3",
+			"egypt.mp3", "emeraldtemple.mp3", "gettinglate.mp3", "guilin.mp3",
+			"inicio.mp3", "kenya.mp3", "london.mp3", "maya.mp3", "mtfuji.mp3",
+			"space.mp3", "tajmahal.mp3", "unknown.mp3"],
 
 			function() {
 		Q.compileSheets("backgrounds.png", "backgrounds.json");
@@ -119,21 +124,20 @@ var game = function() {
 	});
 
 	Q.animations("explosion2", {
-		boom: {frames: [0,1,2], rate: 1/10}
+		boom: {frames: [0,1,2], rate: 1/5, loop: false, trigger:"erase"}
 	});
 
 	Q.animations("explosion3", {
-		boom: {frames: [0,1,2], rate: 1/10}
+		boom: {frames: [0,1,2], rate: 1/5, loop: false, trigger:"erase"}
 	});
 
 	Q.animations("explosion4", {
-		boom: {frames: [0,1,2], rate: 1/10}
+		boom: {frames: [0,1,2], rate: 1/5, loop: false, trigger:"erase"}
 	});
 
 	Q.animations("explosion5", {
-		boom: {frames: [0,1,2], rate: 1/10}
+		boom: {frames: [0,1,2], rate: 1/5, loop: false, trigger:"erase"}
 	});
-
 
 //-------------BACKGROUND_SPRITE----------------
 	Q.Sprite.extend("Backgrounds",{
@@ -238,7 +242,10 @@ var game = function() {
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
 
-				//Animacion explosion
+				Q.audio.play("burbuja_pop.mp3");
+				var explosion2 = new Q.Explosion2({x:this.p.x, y:this.p.y});
+				this.stage.insert(explosion2);
+				
 
 				var bola31 = new Q.Bolas3({x:this.p.x, y:this.p.y, vx:150});
 				this.stage.insert(bola31);
@@ -260,8 +267,6 @@ var game = function() {
 				sprite: "bolas3",
 				sheet: "bolas3",
 				frame:0,
-				x: 200,
-				y: 200,
 				vx: 150,
 				vy:-350,
 				gravity: 0.5,
@@ -286,6 +291,11 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
+
+				Q.audio.play("burbuja_pop.mp3");
+				var explosion3 = new Q.Explosion3({x:this.p.x, y:this.p.y});
+				this.stage.insert(explosion3);
+
 				var bola41 = new Q.Bolas4({x:this.p.x, y:this.p.y, vx:150});
 				this.stage.insert(bola41);
 				var bola42 = new Q.Bolas4({x:this.p.x, y:this.p.y, vx:-150});
@@ -306,8 +316,6 @@ var game = function() {
 				sprite: "bolas4",
 				sheet: "bolas4",
 				frame:0,
-				x:200,
-				y:200,
 				vx: 150,
 				vy:-350,
 				gravity: 0.5,
@@ -332,6 +340,11 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
+
+				Q.audio.play("burbuja_pop.mp3");
+				var explosion4 = new Q.Explosion4({x:this.p.x, y:this.p.y});
+				this.stage.insert(explosion4);
+
 				var bola51 = new Q.Bolas5({x:this.p.x, y:this.p.y, vx:150});
 				this.stage.insert(bola51);
 				var bola52 = new Q.Bolas5({x:this.p.x, y:this.p.y, vx:-150});
@@ -352,8 +365,6 @@ var game = function() {
 				sprite: "bolas5",
 				sheet: "bolas5",
 				frame:0,
-				x:200,
-				y:200,
 				vx: 150,
 				vy:-350,
 				gravity: 0.5,
@@ -378,6 +389,11 @@ var game = function() {
 				col.obj.destroy();
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
+
+				Q.audio.play("burbuja_pop.mp3");
+				var explosion5 = new Q.Explosion5({x:this.p.x, y:this.p.y});
+				this.stage.insert(explosion5);
+
 			}
 			if(col.obj.isA("Player")){
 				col.obj.p.playing = false;
@@ -386,6 +402,50 @@ var game = function() {
 			}
 		}
 	});
+
+//-------------BOLAESPECIAL_SPRITE----------------
+	Q.Sprite.extend("BolaEspecial",{
+		init:function(p){
+			this._super(p,{
+				sprite: "bolaEspecial",
+				sheet: "bolaEspecial",
+				vx: 150,
+				x:200,
+				y:200,
+				gravity: 0.5,
+				type: Q.SPRITE_PARTICLE,
+				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
+				scale:2
+			});
+			this.add('2d, animation, aiBounce');
+			this.on("hit",this,"collision");
+		}, 
+
+		step:function() {
+			this.play("change", 1);
+
+			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
+				if (collision.obj.isA("Down_Edge")) {
+					this.p.vy = -550;
+				}
+			});						
+		},
+
+		collision: function(col) {
+			if(col.obj.isA("Harpoon")){
+				Q.state.set('endGame', 1);
+				col.obj.destroy();
+				Q.state.set('ammo', Q.state.p.ammo+1);
+				this.destroy();
+			}
+			if(col.obj.isA("Player")){
+				col.obj.p.playing = false;
+				col.obj.del("platformerControls");
+				col.obj.play("died", 3);
+			}
+		}
+	});
+
 
 //-------------RECTANGULOS1_SPRITE----------------
 	Q.Sprite.extend("Rectangulos1",{
@@ -531,51 +591,100 @@ var game = function() {
 				col.obj.play("died", 3);
 			}
 		}
-	});
+	});	
 
-//-------------BOLAESPECIAL_SPRITE----------------
-	Q.Sprite.extend("BolaEspecial",{
+
+//-------------EXPLOSION_BOLA2----------------
+	Q.Sprite.extend("Explosion2",{
 		init:function(p){
 			this._super(p,{
-				sprite: "bolaEspecial",
-				sheet: "bolaEspecial",
-				vx: 150,
-				x:200,
-				y:200,
-				gravity: 0.5,
-				type: Q.SPRITE_PARTICLE,
-				collisionMask: Q.SPRITE_ENEMY | Q.SPRITE_FRIENDLY | Q.SPRITE_DEFAULT,
+				sprite:"explosion2",
+				sheet:"explosion2",
+				frame:0,
+				type: Q.SPRITE_POWERUP,
 				scale:2
 			});
-			this.add('2d, animation, aiBounce');
-			this.on("hit",this,"collision");
-		}, 
-
-		step:function() {
-			this.play("change", 1);
-
-			this.on("bump.bottom, bump.top, bump.right, bump.left", function(collision) {
-				if (collision.obj.isA("Down_Edge")) {
-					this.p.vy = -550;
-				}
-			});						
+			this.add('animation');
+			this.on("erase", this, "kill");
 		},
 
-		collision: function(col) {
-			if(col.obj.isA("Harpoon")){
-				Q.state.set('endGame', 1);
-				col.obj.destroy();
-				Q.state.set('ammo', Q.state.p.ammo+1);
-				this.destroy();
-			}
-			if(col.obj.isA("Player")){
-				col.obj.p.playing = false;
-				col.obj.del("platformerControls");
-				col.obj.play("died", 3);
-			}
-		}
-	});		
+		step: function(){
+			this.play("boom", 1);
+		},
 
+		kill: function(){
+			this.destroy();
+		}
+	})
+
+//-------------EXPLOSION_BOLA3----------------
+	Q.Sprite.extend("Explosion3",{
+		init:function(p){
+			this._super(p,{
+				sprite:"explosion3",
+				sheet:"explosion3",
+				frame:0,
+				type: Q.SPRITE_POWERUP,
+				scale:2
+			});
+			this.add('animation');
+			this.on("erase", this, "kill");
+		},
+
+		step: function(){
+			this.play("boom", 1);
+		},
+
+		kill: function(){
+			this.destroy();
+		}
+	})
+
+//-------------EXPLOSION_BOLA3----------------
+	Q.Sprite.extend("Explosion4",{
+		init:function(p){
+			this._super(p,{
+				sprite:"explosion4",
+				sheet:"explosion4",
+				frame:0,
+				type: Q.SPRITE_POWERUP,
+				scale:2
+			});
+			this.add('animation');
+			this.on("erase", this, "kill");
+		},
+
+		step: function(){
+			this.play("boom", 1);
+		},
+
+		kill: function(){
+			this.destroy();
+		}
+	})
+
+//-------------EXPLOSION_BOLA5----------------
+	Q.Sprite.extend("Explosion5",{
+		init:function(p){
+			this._super(p,{
+				sprite:"explosion5",
+				sheet:"explosion5",
+				frame:0,
+				type: Q.SPRITE_POWERUP,
+				scale:2
+			});
+			this.add('animation');
+			this.on("erase", this, "kill");
+		},
+
+		step: function(){
+			this.play("boom", 1);
+		},
+
+		kill: function(){
+			this.destroy();
+		}
+	})
 
 
 //-------------HARPOON_SPRITE----------------
@@ -608,8 +717,6 @@ var game = function() {
 			this.play("change", 1);
 		}
 	});
-
-
 
 //-------------PLAYER_SPRITE----------------
 	Q.Sprite.extend("Player",{
@@ -663,6 +770,7 @@ var game = function() {
 		fire:function(){
 			if(this.p.playing){
 				if(Q.state.p.ammo > 0){
+					Q.audio.play("disparo.mp3");
 					this.play("shoot", 3);
 					Q.state.set('ammo', Q.state.p.ammo-1);
 				}
@@ -671,10 +779,11 @@ var game = function() {
 
 		launchHarpoon: function(){
 			var harpoon = new Q.Harpoon({x:this.p.x});
-			this.stage.insert(harpoon);
+			this.stage.insertHarpoon(harpoon);
 		},
 
 		kill: function(){
+			Q.audio.play("gameover.mp3");
 			Q.stage().pause();
 		}
 	});
