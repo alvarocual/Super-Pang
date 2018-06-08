@@ -14,10 +14,6 @@
 	
   
 # Burbujas:
-## Bolas1:
-	- Ancho: 64
-	- Alto: 53
-
 ## Bolas2:
 	- Ancho: 48
 	- Alto: 40
@@ -38,15 +34,15 @@
 	- Ancho: 32
 	- Alto: 26
 
-## Rectangulos2: 
+## Rectangulos1: 
 	- Ancho: 30
 	- Alto: 26
 
-## Rectangulos3: 
+## Rectangulos2: 
 	- Ancho: 15
 	- Alto: 12
 
-## Rectangulos4: 
+## Rectangulos3: 
 	- Ancho: 9
 	- Alto: 8
 	
