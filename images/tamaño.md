@@ -49,6 +49,9 @@
 # Bonificadores
 	- Ancho: 20
 	- Alto: 20
+
+# Explosiones
+ Mismo tamaño que las pelotas que representan
 	
 	
 # Arpones
