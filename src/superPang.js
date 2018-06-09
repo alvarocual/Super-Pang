@@ -8,6 +8,9 @@ var game = function() {
 			.controls().touch().enableSound();
 			Q.debug = true;
 
+
+/******Pantallas de título y créditos******/
+
 //---------------TÍTULO-----------------
 	Q.Sprite.extend("Titulo", {
         init: function(p) {
@@ -64,6 +67,9 @@ var game = function() {
         });
 	});
 
+/******************************************/
+
+/*******Carga del nivel y los fondos*******/
 
 //-------------BACKGROUND----------------
 	Q.scene("back",function(stage) {
@@ -108,6 +114,9 @@ var game = function() {
 		}
 	};
 
+/*****************************************/
+
+/************Carga de recursos***********/
 
 //-------------LOAD_RESOURCES----------------
 	Q.load(["backgrounds.png", "backgrounds.json", "player.png", "player.json", "arpon.png", 
@@ -146,6 +155,9 @@ var game = function() {
 		Q.stageScene("mainTitle",0);
 	});
 
+/****************************************/
+
+/*********Gestión de animaciones*********/
 
 //-------------ANIMATIONS-------------
 	Q.animations("player", {
@@ -205,6 +217,10 @@ var game = function() {
 		boom: {frames: [0,1,2], rate: 1/5, loop: false, trigger:"erase"}
 	});
 
+/****************************************/
+
+/*********** Sprites para el fondo y **********/
+/********** las paredes del escenario *********/
 
 //-------------BACKGROUND_SPRITE----------------
 	Q.Sprite.extend("Backgrounds",{
@@ -274,7 +290,10 @@ var game = function() {
 		}
 	});
 
+/*********************************************/
 
+/*************** Sprites de los enemigos ****************/
+/************ (y la gestión de colisiones) *************/
 //-------------BOLAS2_SPRITE----------------
 	Q.Sprite.extend("Bolas2",{
 		init:function(p){
@@ -671,6 +690,9 @@ var game = function() {
 		}
 	});	
 
+/**********************************************************/
+
+/**** Sprites de las explosiones de los enemigos ****/
 
 //-------------EXPLOSION_BOLA2----------------
 	Q.Sprite.extend("Explosion2",{
@@ -833,6 +855,9 @@ var game = function() {
 		}
 	});
 
+/*******************************************************/
+
+/******* Sprite de los arpones del jugador ******/
 
 //-------------HARPOON_SPRITE----------------
 	Q.MovingSprite.extend("Harpoon",{
@@ -865,6 +890,9 @@ var game = function() {
 		}
 	});
 
+/*************************************************/
+
+/*************** Sprite del jugador **************/
 
 //-------------PLAYER_SPRITE----------------
 	Q.Sprite.extend("Player",{
@@ -884,11 +912,8 @@ var game = function() {
 			});
 			this.add('2d, platformerControls, animation');
 			
-			/*The user push the fire button*/
 			Q.input.on("fire", this,"fire");
 
-			/* Wait until the firing animation has played until
-			 actually launching the harpoon*/
 			this.on("shooted",this,"launchHarpoon");
 			this.on("dying", this, "kill");
 		},
@@ -942,4 +967,6 @@ var game = function() {
 			Q.stageScene("mainTitle", 0);
 		}
 	});
+
+/*************************************************/
 }
