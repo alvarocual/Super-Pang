@@ -6,7 +6,7 @@ var game = function() {
 					maximize:true,
 					audioSupported:["mp3"]})
 			.controls().touch().enableSound();
-			//Q.debug = true;
+			Q.debug = true;
 
 //---------------TÍTULO-----------------
 	Q.Sprite.extend("Titulo", {
@@ -18,23 +18,51 @@ var game = function() {
         }
     });
 
+//---------------CREDITOS-----------------
+	Q.Sprite.extend("Creditos", {
+        init: function(p) {
+            this._super(p, {
+                asset: "credits.png",
+                scale: 1.35
+            });
+        }
+    });
+
+
 //-------------MAIN_TITLE---------------
 	Q.scene("mainTitle", function(stage){
-		stage.insert(new Q.Titulo({x:384, y:288,}));
+		stage.insert(new Q.Titulo({x:384, y:288}));
 		Q.audio.play("inicio.mp3", {loop:true});
 
-		var box = stage.insert(new Q.UI.Container({x: 384, y: 418}));
+		var boxPlay = stage.insert(new Q.UI.Container({x: 384, y: 418}));
+		var boxCredits = stage.insert(new Q.UI.Container({x: 384, y: 478}));
         
-        var buttonPlay = box.insert(new Q.UI.Button({ x: 0, y: 0, w: 256, h: 30}));
+        var buttonPlay = boxPlay.insert(new Q.UI.Button({ x: 0, y: 0, w: 256, h: 30}));
+        var buttonCredits = boxCredits.insert(new Q.UI.Button({ x: 0, y: 0, w: 198, h: 30}));
+
         buttonPlay.on("click", function() {
         	Q.audio.stop("inicio.mp3");
             Q.stageScene("back", 0);
 			Q.stageScene("level", 1);
         });
 
-		//Q.audio.stop();
-		//Q.audio.play(stage.options.sound, {loop:true});
-		//container.fit(20);
+        buttonCredits.on("click", function() {
+           Q.stageScene("credits", 0);
+        });
+	});
+
+
+//-------------CREDITS----------------
+	Q.scene("credits",function(stage) {
+		stage.insert(new Q.Creditos({x:384, y:288}));
+
+		var boxReturn = stage.insert(new Q.UI.Container({x: 841, y: 485}));
+		
+		var buttonReturn = boxReturn.insert(new Q.UI.Button({ x: 0, y: 0, w: 175, h: 60}));
+
+		buttonReturn.on("click", function() {
+           Q.stageScene("mainTitle", 0);
+        });
 	});
 
 
@@ -87,13 +115,14 @@ var game = function() {
 			"arpon.json", "left_edge.png", "right_edge.png", "down_edge.png", "up_edge.png",
 			"rectangulos1.png", "rectangulos1.json", "rectangulos2.png", "rectangulos2.json", 
 			"rectangulos3.png", "rectangulos3.json", "explosionRect1.png", "explosionRect2.png",
-			"explosionRect3.png", "tittle.png", "explosionRect1.json", "explosionRect2.json", 
+			"explosionRect3.png", "tittle.png", "credits.png", "explosionRect1.json", "explosionRect2.json", 
 			"explosionRect3.json", "bolas2.png", "bolas2.json", "bolas3.png", "bolas3.json",
 			"bolas4.png", "bolas4.json", "bolas5.png", "bolas5.json", "bolaEspecial.png",
 			"bolaEspecial.json", "explosion2.png", "explosion2.json", "explosion3.png", 
 			"explosion3.json", "explosion4.png", "explosion4.json", "explosion5.png",
 			"explosion5.json", "burbuja_pop.mp3", "rectangulo_pop.mp3", "gameover.mp3",
 			"inicio.mp3", "victoria.mp3", "disparo.mp3", "bandaSonora.mp3"], function() {
+
 		Q.compileSheets("backgrounds.png", "backgrounds.json");
 		Q.compileSheets("player.png", "player.json");
 		Q.compileSheets("arpon.png", "arpon.json");
