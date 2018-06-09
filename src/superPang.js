@@ -8,6 +8,35 @@ var game = function() {
 			.controls().touch().enableSound();
 			//Q.debug = true;
 
+//---------------TÍTULO-----------------
+	Q.Sprite.extend("Titulo", {
+        init: function(p) {
+            this._super(p, {
+                asset: "tittle.png",
+                scale: 1.35
+            });
+        }
+    });
+
+//-------------MAIN_TITLE---------------
+	Q.scene("mainTitle", function(stage){
+		stage.insert(new Q.Titulo({x:384, y:288,}));
+		Q.audio.play("inicio.mp3", {loop:true});
+
+		var box = stage.insert(new Q.UI.Container({x: 384, y: 418}));
+        
+        var buttonPlay = box.insert(new Q.UI.Button({ x: 0, y: 0, w: 256, h: 30}));
+        buttonPlay.on("click", function() {
+        	Q.audio.stop("inicio.mp3");
+            Q.stageScene("back", 0);
+			Q.stageScene("level", 1);
+        });
+
+		//Q.audio.stop();
+		//Q.audio.play(stage.options.sound, {loop:true});
+		//container.fit(20);
+	});
+
 
 //-------------BACKGROUND----------------
 	Q.scene("back",function(stage) {
@@ -54,17 +83,17 @@ var game = function() {
 
 
 //-------------LOAD_RESOURCES----------------
-	Q.load(["backgrounds.png", "backgrounds.json", "player.png", "player.json", "arpon.png", "arpon.json",
-			"left_edge.png", "right_edge.png", "down_edge.png", "up_edge.png",
+	Q.load(["backgrounds.png", "backgrounds.json", "player.png", "player.json", "arpon.png", 
+			"arpon.json", "left_edge.png", "right_edge.png", "down_edge.png", "up_edge.png",
 			"rectangulos1.png", "rectangulos1.json", "rectangulos2.png", "rectangulos2.json", 
-			"rectangulos3.png", "rectangulos3.json",
-			"bolas2.png", "bolas2.json", "bolas3.png", "bolas3.json",
-			"bolas4.png", "bolas4.json", "bolas5.png", "bolas5.json", "bolaEspecial.png", "bolaEspecial.json",
-			"explosion2.png", "explosion2.json", "explosion3.png", "explosion3.json",
-			"explosion4.png", "explosion4.json", "explosion5.png", "explosion5.json",
-			"burbuja_pop.mp3", "rectangulo_pop.mp3", "gameover.mp3", "inicio.mp3", "bandaSonora.mp3"],
-
-			function() {
+			"rectangulos3.png", "rectangulos3.json", "explosionRect1.png", "explosionRect2.png",
+			"explosionRect3.png", "tittle.png", "explosionRect1.json", "explosionRect2.json", 
+			"explosionRect3.json", "bolas2.png", "bolas2.json", "bolas3.png", "bolas3.json",
+			"bolas4.png", "bolas4.json", "bolas5.png", "bolas5.json", "bolaEspecial.png",
+			"bolaEspecial.json", "explosion2.png", "explosion2.json", "explosion3.png", 
+			"explosion3.json", "explosion4.png", "explosion4.json", "explosion5.png",
+			"explosion5.json", "burbuja_pop.mp3", "rectangulo_pop.mp3", "gameover.mp3",
+			"inicio.mp3", "victoria.mp3", "disparo.mp3", "bandaSonora.mp3"], function() {
 		Q.compileSheets("backgrounds.png", "backgrounds.json");
 		Q.compileSheets("player.png", "player.json");
 		Q.compileSheets("arpon.png", "arpon.json");
@@ -80,13 +109,15 @@ var game = function() {
 		Q.compileSheets("explosion3.png", "explosion3.json");
 		Q.compileSheets("explosion4.png", "explosion4.json");
 		Q.compileSheets("explosion5.png", "explosion5.json");
+		Q.compileSheets("explosionRect1.png", "explosionRect1.json");
+		Q.compileSheets("explosionRect2.png", "explosionRect2.json");
+		Q.compileSheets("explosionRect3.png", "explosionRect3.json");
 
 		Q.compileSheets("bolaEspecial.png", "bolaEspecial.json");
 
-		Q.state.reset({refresh:11, current:1, nBackground:0, ammo:3, endGame:0});
+		Q.state.reset({refresh:11, current:1, nBackground:0, ammo:4, endGame:0});
 
-		Q.stageScene("back", 0);
-		Q.stageScene("level", 1);
+		Q.stageScene("mainTitle");
 	});
 
 
@@ -95,7 +126,7 @@ var game = function() {
 		move_right: 	{ frames: [3,0,1,2],  rate: 1/8, flip:"right" }, 
 		move_left: 		{ frames: [3,0,1,2],  rate: 1/8, flip:"left" },
 		stand: 			{ frames: [4],		  rate: 1/8 },
-		died: 			{ frames: [6],		  rate: 1/40, loop: false, trigger:"dying" },
+		died: 			{ frames: [6],		  rate: 1,	 loop: false, trigger:"dying" },
 		win:  		    { frames: [7],		  rate: 1,	 loop: false},
 		shoot:  		{ frames: [5],		  rate: 1/8, loop: false, trigger:"shooted" }
 	});
@@ -135,6 +166,19 @@ var game = function() {
 	Q.animations("explosion5", {
 		boom: {frames: [0,1,2], rate: 1/5, loop: false, trigger:"erase"}
 	});
+
+	Q.animations("explosionRect1", {
+		boom: {frames: [0,1,2], rate: 1/5, loop: false, trigger:"erase"}
+	});
+
+	Q.animations("explosionRect2", {
+		boom: {frames: [0,1,2], rate: 1/5, loop: false, trigger:"erase"}
+	});
+
+	Q.animations("explosionRect3", {
+		boom: {frames: [0,1,2], rate: 1/5, loop: false, trigger:"erase"}
+	});
+
 
 //-------------BACKGROUND_SPRITE----------------
 	Q.Sprite.extend("Backgrounds",{
@@ -483,6 +527,8 @@ var game = function() {
 				this.destroy();
 
 				Q.audio.play("rectangulo_pop.mp3");
+				var explosionRect1 = new Q.ExplosionRect1({x:this.p.x, y:this.p.y});
+				this.stage.insert(explosionRect1);
 				var bola21 = new Q.Rectangulos2({x:this.p.x, y:this.p.y, vx: 150});
 				this.stage.insert(bola21);
 				var bola22 = new Q.Rectangulos2({x:this.p.x, y:this.p.y, vx:-150});
@@ -535,6 +581,8 @@ var game = function() {
 				this.destroy();
 
 				Q.audio.play("rectangulo_pop.mp3");
+				var explosionRect2 = new Q.ExplosionRect2({x:this.p.x, y:this.p.y});
+				this.stage.insert(explosionRect2);
 				var bola31 = new Q.Rectangulos3({x:this.p.x, y:this.p.y, vx: 150});
 				this.stage.insert(bola31);
 				var bola32 = new Q.Rectangulos3({x:this.p.x, y:this.p.y, vx:-150});
@@ -586,6 +634,8 @@ var game = function() {
 				Q.state.set('ammo', Q.state.p.ammo+1);
 				this.destroy();
 				Q.audio.play("rectangulo_pop.mp3");
+				var explosionRect3 = new Q.ExplosionRect3({x:this.p.x, y:this.p.y});
+				this.stage.insert(explosionRect3);
 			}
 			if(col.obj.isA("Player")){
 				col.obj.p.playing = false;
@@ -617,7 +667,7 @@ var game = function() {
 		kill: function(){
 			this.destroy();
 		}
-	})
+	});
 
 //-------------EXPLOSION_BOLA3----------------
 	Q.Sprite.extend("Explosion3",{
@@ -640,9 +690,9 @@ var game = function() {
 		kill: function(){
 			this.destroy();
 		}
-	})
+	});
 
-//-------------EXPLOSION_BOLA3----------------
+//-------------EXPLOSION_BOLA4----------------
 	Q.Sprite.extend("Explosion4",{
 		init:function(p){
 			this._super(p,{
@@ -663,7 +713,7 @@ var game = function() {
 		kill: function(){
 			this.destroy();
 		}
-	})
+	});
 
 //-------------EXPLOSION_BOLA5----------------
 	Q.Sprite.extend("Explosion5",{
@@ -686,7 +736,76 @@ var game = function() {
 		kill: function(){
 			this.destroy();
 		}
-	})
+	});
+
+//-------------EXPLOSION_RECTANGULO1----------------
+	Q.Sprite.extend("ExplosionRect1",{
+		init:function(p){
+			this._super(p,{
+				sprite:"explosionRect1",
+				sheet:"explosionRect1",
+				frame:0,
+				type: Q.SPRITE_POWERUP,
+				scale:2
+			});
+			this.add('animation');
+			this.on("erase", this, "kill");
+		},
+
+		step: function(){
+			this.play("boom", 1);
+		},
+
+		kill: function(){
+			this.destroy();
+		}
+	});
+
+//-------------EXPLOSION_RECTANGULO2----------------
+	Q.Sprite.extend("ExplosionRect2",{
+		init:function(p){
+			this._super(p,{
+				sprite:"explosionRect2",
+				sheet:"explosionRect2",
+				frame:0,
+				type: Q.SPRITE_POWERUP,
+				scale:2
+			});
+			this.add('animation');
+			this.on("erase", this, "kill");
+		},
+
+		step: function(){
+			this.play("boom", 1);
+		},
+
+		kill: function(){
+			this.destroy();
+		}
+	});
+
+//-------------EXPLOSION_RECTANGULO1----------------
+	Q.Sprite.extend("ExplosionRect3",{
+		init:function(p){
+			this._super(p,{
+				sprite:"explosionRect3",
+				sheet:"explosionRect3",
+				frame:0,
+				type: Q.SPRITE_POWERUP,
+				scale:2
+			});
+			this.add('animation');
+			this.on("erase", this, "kill");
+		},
+
+		step: function(){
+			this.play("boom", 1);
+		},
+
+		kill: function(){
+			this.destroy();
+		}
+	});
 
 
 //-------------HARPOON_SPRITE----------------
@@ -719,6 +838,7 @@ var game = function() {
 			this.play("change", 1);
 		}
 	});
+
 
 //-------------PLAYER_SPRITE----------------
 	Q.Sprite.extend("Player",{
@@ -762,6 +882,8 @@ var game = function() {
 			}
 
 			if (Q.state.p.endGame === 1) {
+					Q.audio.stop("bandaSonora.mp3");
+					Q.audio.play("victoria.mp3");
 					this.play("win", 3);
 					this.p.playing = false;
 					this.del("platformerControls");
@@ -772,6 +894,7 @@ var game = function() {
 		fire:function(){
 			if(this.p.playing){
 				if(Q.state.p.ammo > 0){
+					Q.audio.play("disparo.mp3");
 					this.play("shoot", 3);
 					Q.state.set('ammo', Q.state.p.ammo-1);
 				}
