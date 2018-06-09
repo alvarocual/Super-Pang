@@ -28,14 +28,13 @@ var game = function() {
         }
     });
 
-
 //-------------MAIN_TITLE---------------
 	Q.scene("mainTitle", function(stage){
 		stage.insert(new Q.Titulo({x:384, y:288}));
 		Q.audio.play("inicio.mp3", {loop:true});
 
 		var boxPlay = stage.insert(new Q.UI.Container({x: 384, y: 418}));
-		var boxCredits = stage.insert(new Q.UI.Container({x: 384, y: 478}));
+		var boxCredits = stage.insert(new Q.UI.Container({x: 384, y: 460}));
         
         var buttonPlay = boxPlay.insert(new Q.UI.Button({ x: 0, y: 0, w: 256, h: 30}));
         var buttonCredits = boxCredits.insert(new Q.UI.Button({ x: 0, y: 0, w: 256, h: 30}));
@@ -47,21 +46,21 @@ var game = function() {
         });
 
         buttonCredits.on("click", function() {
-           Q.stageScene("credits", 0);
+        	Q.stageScene("credits", 0);
         });
 	});
-
 
 //-------------CREDITS----------------
 	Q.scene("credits",function(stage) {
 		stage.insert(new Q.Creditos({x:384, y:288}));
 
-		var boxReturn = stage.insert(new Q.UI.Container({x: 841, y: 485}));
+		var boxReturn = stage.insert(new Q.UI.Container({x: 641, y: 502}));
 		
 		var buttonReturn = boxReturn.insert(new Q.UI.Button({ x: 0, y: 0, w: 175, h: 60}));
 
 		buttonReturn.on("click", function() {
-           Q.stageScene("mainTitle", 0);
+			Q.audio.stop("victoria.mp3");
+			Q.stageScene("mainTitle", 0);
         });
 	});
 
@@ -71,7 +70,6 @@ var game = function() {
 		stage.insert(new Q.Backgrounds());
 	});
 
-
 //-------------LEVEL----------------
 	Q.scene("level",function(stage){
 		stage.insert(new Q.Left_Edge());
@@ -80,6 +78,7 @@ var game = function() {
 		stage.insert(new Q.Down_Edge());
 		stage.insert(new Q.Player());
 		Q.audio.play("bandaSonora.mp3", {loop:true});
+		Q.state.reset({refresh:11, current:1, nBackground:0, ammo:4, endGame:0});
 		stage.on('poststep', this, gameLoop);
 	});
 
@@ -92,7 +91,7 @@ var game = function() {
 			Q.state.set('current', Q.state.p.refresh);
 			var xRandom = 0;
 
-			if (Q.state.p.nBackground === 40) {
+			if (Q.state.p.nBackground === 1) {
 				xRandom = Math.floor((Math.random() * 600) + 100);
 				Q.stage().insert(new Q.BolaEspecial({x:xRandom}));
 			}
@@ -144,9 +143,7 @@ var game = function() {
 
 		Q.compileSheets("bolaEspecial.png", "bolaEspecial.json");
 
-		Q.state.reset({refresh:11, current:1, nBackground:0, ammo:4, endGame:0});
-
-		Q.stageScene("mainTitle");
+		Q.stageScene("mainTitle",0);
 	});
 
 
@@ -917,6 +914,8 @@ var game = function() {
 					this.p.playing = false;
 					this.del("platformerControls");
 					Q.stage().pause();
+					Q.clearStages();
+					Q.stageScene("credits",0);
 			}
 		},
 
@@ -939,6 +938,8 @@ var game = function() {
 			Q.audio.stop("bandaSonora.mp3");
 			Q.audio.play("gameover.mp3");
 			Q.stage().pause();
+			Q.clearStages();
+			Q.stageScene("mainTitle", 0);
 		}
 	});
 }
