@@ -38,7 +38,7 @@ var game = function() {
 		var boxCredits = stage.insert(new Q.UI.Container({x: 384, y: 478}));
         
         var buttonPlay = boxPlay.insert(new Q.UI.Button({ x: 0, y: 0, w: 256, h: 30}));
-        var buttonCredits = boxCredits.insert(new Q.UI.Button({ x: 0, y: 0, w: 198, h: 30}));
+        var buttonCredits = boxCredits.insert(new Q.UI.Button({ x: 0, y: 0, w: 256, h: 30}));
 
         buttonPlay.on("click", function() {
         	Q.audio.stop("inicio.mp3");
