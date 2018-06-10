@@ -2,6 +2,9 @@
 ## Enlace del juego
 https://alvarocual.github.io/Super-Pang/
 
+## Gameplay
+https://www.youtube.com/watch?v=v9leo6Qp0TU
+
 # Memoria
 ## Índice:
 
