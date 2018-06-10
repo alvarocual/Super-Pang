@@ -6,13 +6,13 @@ https://alvarocual.github.io/Super-Pang/
 ## Índice:
 
 ### 1. Diseño del juego
-  1.1. Objetivo del juego
-  1.2. Principales mecánicas
-  1.3. Personajes
+	- Objetivo del juego
+	- Principales mecánicas
+	- Personajes
   
 ### 2. Diseño de la implementación
-  2.1. Arquitectura
-  2.2 Principales componentes
+	- Arquitectura
+	- Principales componentes
   
 ### 3. Equipo de trabajo y reparto de tareas
 
