@@ -6,10 +6,10 @@ var game = function() {
 					maximize:true,
 					audioSupported:["mp3"]})
 			.controls().touch().enableSound();
-			Q.debug = true;
+			//Q.debug = true;
 
 
-/******Pantallas de título y créditos******/
+/******Pantallas de título, victoria, derrota y créditos******/
 
 //---------------TÍTULO-----------------
 	Q.Sprite.extend("Titulo", {
@@ -31,7 +31,27 @@ var game = function() {
         }
     });
 
-//-------------MAIN_TITLE---------------
+//---------------DERROTA-----------------
+	Q.Sprite.extend("Derrota", {
+        init: function(p) {
+            this._super(p, {
+                asset: "derrota.png",
+                scale: 1.35
+            });
+        }
+    });
+
+//---------------VICTORIA-----------------
+	Q.Sprite.extend("Victoria", {
+        init: function(p) {
+            this._super(p, {
+                asset: "victoria.png",
+                scale: 1.35
+            });
+        }
+    });
+
+//-------------ESCENA TÍTULO---------------
 	Q.scene("mainTitle", function(stage){
 		stage.insert(new Q.Titulo({x:384, y:288}));
 		Q.audio.play("inicio.mp3", {loop:true});
@@ -43,7 +63,7 @@ var game = function() {
         var buttonCredits = boxCredits.insert(new Q.UI.Button({ x: 0, y: 0, w: 256, h: 30}));
 
         buttonPlay.on("click", function() {
-        	Q.audio.stop("inicio.mp3");
+        	Q.audio.stop();
             Q.stageScene("back", 0);
 			Q.stageScene("level", 1);
         });
@@ -53,7 +73,7 @@ var game = function() {
         });
 	});
 
-//-------------CREDITS----------------
+//-------------ESCENA CRÉDITOS----------------
 	Q.scene("credits",function(stage) {
 		stage.insert(new Q.Creditos({x:384, y:288}));
 
@@ -62,12 +82,48 @@ var game = function() {
 		var buttonReturn = boxReturn.insert(new Q.UI.Button({ x: 0, y: 0, w: 175, h: 60}));
 
 		buttonReturn.on("click", function() {
-			Q.audio.stop("victoria.mp3");
+			Q.clearStages();
 			Q.stageScene("mainTitle", 0);
         });
+        Q.audio.stop("bandaSonora.mp3");
+        Q.audio.play(stage.options.sound);
 	});
 
-/******************************************/
+//-------------ESCENA DERROTA----------------
+	Q.scene("defeat",function(stage) {
+		stage.insert(new Q.Derrota({x:384, y:288}));
+
+		var boxReturn = stage.insert(new Q.UI.Container({x: 388, y: 285}));
+		
+		var buttonReturn = boxReturn.insert(new Q.UI.Button({ x: 0, y: 0, w: 175, h: 60}));
+
+		buttonReturn.on("click", function() {
+			Q.audio.stop();
+			Q.clearStages();
+			Q.stageScene("mainTitle", 0);
+        });
+        Q.audio.stop("bandaSonora.mp3");
+        Q.audio.play(stage.options.sound);
+	});
+
+//-------------ESCENA VICTORIA----------------
+	Q.scene("victory",function(stage) {
+		stage.insert(new Q.Victoria({x:384, y:288}));
+
+		var boxReturn = stage.insert(new Q.UI.Container({x: 388, y: 285}));
+		
+		var buttonReturn = boxReturn.insert(new Q.UI.Button({ x: 0, y: 0, w: 175, h: 60}));
+
+		buttonReturn.on("click", function() {
+			Q.audio.stop();
+			Q.clearStages();
+			Q.stageScene("mainTitle", 0);
+        });
+        Q.audio.stop("bandaSonora.mp3");
+        Q.audio.play(stage.options.sound);
+	});
+
+/************************************************************/
 
 /*******Carga del nivel y los fondos*******/
 
@@ -97,7 +153,7 @@ var game = function() {
 			Q.state.set('current', Q.state.p.refresh);
 			var xRandom = 0;
 
-			if (Q.state.p.nBackground === 1) {
+			if (Q.state.p.nBackground === 40) {
 				xRandom = Math.floor((Math.random() * 600) + 100);
 				Q.stage().insert(new Q.BolaEspecial({x:xRandom}));
 			}
@@ -119,7 +175,7 @@ var game = function() {
 /************Carga de recursos***********/
 
 //-------------LOAD_RESOURCES----------------
-	Q.load(["backgrounds.png", "backgrounds.json", "player.png", "player.json", "arpon.png", 
+	Q.load(["backgrounds.png", "derrota.png", "victoria.png", "backgrounds.json", "player.png", "player.json", "arpon.png", 
 			"arpon.json", "left_edge.png", "right_edge.png", "down_edge.png", "up_edge.png",
 			"rectangulos1.png", "rectangulos1.json", "rectangulos2.png", "rectangulos2.json", 
 			"rectangulos3.png", "rectangulos3.json", "explosionRect1.png", "explosionRect2.png",
@@ -933,14 +989,11 @@ var game = function() {
 			}
 
 			if (Q.state.p.endGame === 1) {
-					Q.audio.stop("bandaSonora.mp3");
-					Q.audio.play("victoria.mp3");
 					this.play("win", 3);
 					this.p.playing = false;
 					this.del("platformerControls");
 					Q.stage().pause();
-					Q.clearStages();
-					Q.stageScene("credits",0);
+					Q.stageScene("victory",0, {sound:"victoria.mp3"});
 			}
 		},
 
@@ -960,11 +1013,8 @@ var game = function() {
 		},
 
 		kill: function(){
-			Q.audio.stop("bandaSonora.mp3");
-			Q.audio.play("gameover.mp3");
 			Q.stage().pause();
-			Q.clearStages();
-			Q.stageScene("mainTitle", 0);
+			Q.stageScene("defeat", 0, {sound: "gameover.mp3"});
 		}
 	});
 
